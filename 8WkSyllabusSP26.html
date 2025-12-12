@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCT 132 - Managerial Accounting Syllabus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        /* --- BRAND GUIDE STYLES --- */
+        :root {
+            /* Primary Colors */
+            --trailblazer-blue: #0033A0; /* Egyptian Blue */
+            --white: #FFFFFF;
+            --black: #000000;
+            /* Secondary Colors */
+            --sunglow: #FFCB1F;
+            --battleship-gray: #898989;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif; /* Raleway Type Family */
+            color: var(--black);
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* BLUE BACKGROUND SECTION 1: HEADER */
+        header {
+            background-color: var(--trailblazer-blue);
+            color: var(--white); /* Ensures all text in the header is white */
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%; /* Ensure full width for centering */
+        }
+
+        header img {
+            height: 80px; /* Increased size from 50px */
+            flex-shrink: 0; /* Prevents image from shrinking */
+        }
+
+        .header-titles {
+            display: flex;
+            flex-direction: column;
+            margin-left: 20px;
+            flex-grow: 1;
+            /* Centering additions */
+            align-items: center; 
+            text-align: center;
+        }
+
+        header h1 {
+            font-weight: 700; /* Raleway Bold */
+            margin: 0;
+            font-size: 1.5em; /* Font size reduced */
+            white-space: nowrap; /* Forces text onto one line */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        header p {
+            margin: 0;
+            font-weight: 300;
+            font-size: 1em;
+            color: var(--white);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 10px auto; /* Reduced from 30px to reduce whitespace */
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Styling for editable content */
+        [contenteditable="true"] {
+            padding: 5px;
+            border: 1px dashed var(--sunglow);
+            outline: none;
+            background-color: #fffef7;
+            transition: border-color 0.3s;
+        }
+        
+        [contenteditable="false"] {
+            border: 1px solid transparent;
+        }
+
+        h2 {
+            font-weight: 600;
+            color: var(--trailblazer-blue);
+            border-bottom: 3px solid var(--sunglow);
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+
+        .instructor-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px 20px;
+        }
+        .instructor-info div {
+            padding: 5px 0;
+        }
+
+        .no-wrap {
+            white-space: nowrap;
+        }
+
+        /* Grading List Style - No Bullets */
+        .grading-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .grading-list li {
+            margin-bottom: 5px;
+        }
+
+        /* --- BUTTONS & CONTROLS --- */
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Raleway', sans-serif;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        #editToggle {
+            background-color: var(--sunglow);
+            color: var(--black);
+        }
+
+        /* BLUE BACKGROUND SECTION 2: EDITING BUTTON */
+        #editToggle.editing {
+            background-color: var(--trailblazer-blue);
+            color: var(--white); /* Ensures text is white when background is blue */
+        }
+
+        #downloadPdf {
+            background-color: var(--battleship-gray);
+            color: var(--white);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        #status-message {
+            display: none; /* Hidden as requested */
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: var(--trailblazer-blue);
+            font-weight: 600;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        /* --- WEEKLY SCHEDULE STYLES --- */
+        .weekly-schedule details {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #fcfcfc;
+        }
+
+        /* BLUE BACKGROUND SECTION 3: WEEKLY SUMMARY HEADERS */
+        .weekly-schedule summary {
+            background-color: var(--trailblazer-blue);
+            color: var(--white); /* Ensures text is white when background is blue */
+            font-weight: 600;
+            padding: 15px;
+            padding-right: 40px; /* Space for arrow on the right */
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            list-style: none; /* Hide default marker */
+        }
+        
+        .weekly-schedule summary::-webkit-details-marker {
+            display: none; /* Hide marker on Webkit browsers */
+        }
+
+        .weekly-schedule summary::before {
+            content: '◄'; /* Custom marker - Pointing Left */
+            color: var(--white); /* Explicitly ensures the custom marker is white */
+            position: absolute;
+            right: 15px; /* Moved to right */
+            top: 50%; /* Center vertically */
+            transform: translateY(-50%); /* Center vertically */
+            font-size: 0.8em;
+        }
+
+        .weekly-schedule details[open] summary::before {
+            content: '▼';
+        }
+
+        .weekly-schedule summary > * {
+            margin-left: 25px; /* Adjust content position for custom marker */
+        }
+
+        .week-content {
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        .week-content p, .week-content ul, .week-content ol {
+            margin: 5px 0 10px 0;
+        }
+        
+        .week-content strong {
+            color: var(--trailblazer-blue);
+        }
+
+        /* New class for tight spacing in evaluation section */
+        .tight-spacing {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+        
+        /* New styling for assignment lists within weeks */
+        .assignment-list {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-content">
+            <img src="https://cmwick76.github.io/ManagerialAccounting/BrandmarkLogo_white.png" alt="Lewis & Clark Community College Logo">
+            <div class="header-titles">
+                <h1 id="main-title">ACCT 132 - MANAGERIAL ACCOUNTING</h1>
+                <p id="subtitle">Spring 2026</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" id="syllabus-content">
+        
+        <div class="controls">
+            <button id="editToggle" class="btn" disabled>Loading...</button>
+            <button id="downloadPdf" class="btn">Download PDF</button>
+        </div>
+        <div id="status-message"></div>
+
+        <div contenteditable="false" id="course-details" data-key="course-details">
+            <h2>Course Information</h2>
+            <p><strong>Course Name:</strong> ACCT 132 - MANAGERIAL ACCOUNTING (IAI MAJOR: BUS 904)</p>
+            <p><strong>Room:</strong> Science 210</p>
+            <p><strong>Class Times:</strong> Tuesday/Thursdays 8:00 a.m. - 10:30 a.m.</p>
+            <p><strong>Credits:</strong> 3 credit hours (3 hours lecture, 0 hours lab)</p>
+            <p><strong>Start Date:</strong> 03/24/2026</p>
+            <p><strong>Prerequisite:</strong> C or better in ACCT 131.</p>
+        </div>
+
+        <div contenteditable="false" id="instructor-section" data-key="instructor-section">
+            <h2>Instructor</h2>
+            <div class="instructor-info">
+                <div><strong>Name:</strong> Christina Wickenhauser, Associate Professor</div>
+                <div><strong>Office:</strong> Science (SC) 213</div>
+                <div><strong>Email:</strong> cmwickenhauser@lc.edu</div>
+                <div><strong>Cell:</strong> 618-946-0325</div>
+                <div class="no-wrap"><strong>Preferred Contact Method:</strong> Texting between 7 a.m. and 9 p.m.</div>
+            </div>
+        </div>
+
+        <div contenteditable="false" id="description-section" data-key="description-section">
+            <h2>Course Description</h2>
+            <p>Covers accounting procedures as they apply to management function of decision making, including definition of cost, methods of tracking and applying cost to production, calculation, and disposition of variances from standards, budget preparations, and quantitative methods of managerial decision making.</p>
+        </div>
+
+        <div contenteditable="false" id="objectives-section" data-key="objectives-section">
+            <h2>Learning Objectives (CLOs)</h2>
+            <p>Upon successful completion of the course, a student should be able to:</p>
+            <ol>
+                <li>Analyze and classify costs (fixed, variable, direct, indirect, product, period costs).</li>
+                <li>Analyze, interpret, and complete both job-order and process cost accounting cycles.</li>
+                <li>Calculate and analyze variances from standard costs and interpret managerial implications.</li>
+                <li>Construct, analyze, and interpret cost-volume-profit relationships (CVP).</li>
+                <li>Apply activity-based costing (ABC) and compare it to traditional costing.</li>
+                <li>Formulate, interpret, and complete comprehensive master budgets with pro-forma statements.</li>
+                <li>Evaluate ethical implications of managerial accounting decisions.</li>
+                <li>Prepare and analyze financial statements, including the statement of cash flows.</li>
+                <li>Perform profitability and financial ratio analysis (ROI, residual income, balance scorecard).</li>
+                <li>Demonstrate professional communication and teamwork through reports and presentations.</li>
+                <li>Apply present value methods for capital investment decisions.</li>
+            </ol>
+        </div>
+
+        <div contenteditable="false" id="materials-section" data-key="materials-section">
+            <h2>Materials of Instruction</h2>
+            <ul>
+                <li><strong>Required:</strong> Financial and Managerial Accounting, Wild, McGraw Hill, latest edition.</li>
+                <li><strong>Other:</strong> Standard Calculator, Laptop with Microsoft Excel</li>
+                <li><strong>Optional:</strong> None.</li>
+            </ul>
+        </div>
+
+        <div contenteditable="false" id="methods-section" data-key="methods-section">
+            <h2>Methods of Instruction</h2>
+            <p>Instruction methods in this course may include among others, the following:</p>
+            <ol>
+                <li>Lecture</li>
+                <li>Discussion</li>
+                <li>Group Activities</li>
+                <li>Case Studies</li>
+                <li>Project-Based Learning</li>
+                <li>Technology-Enhanced Learning</li>
+            </ol>
+        </div>
+
+        <div contenteditable="false" id="grading-section" data-key="grading-section">
+            <h2>Evaluation of Student Performance</h2>
+            <p>The instructor's policies on evaluation will be distributed to students and the division office at the outset of the course.</p>
+            <p>The methods of evaluating student achievement will include, at minimum, the following:</p>
+            <p><strong>Total Possible Points: 1,000</strong></p>
+            <ul class="grading-list">
+                <li>200 points - Two Exams (100 pts. each)</li>
+                <li>200 points - Four Quizzes (50 pts. each)</li>
+                <li>200 points - Best Ten of Eleven Homework Assignments (20 pts. each)</li>
+                <li>150 points - Three Projects (50 pts. each)</li>
+                <li>250 points - One Progressive Project</li>
+            </ul>
+            <p><strong>Grades will be based on the following scale:</strong></p>
+            <ul class="grading-list">
+                <li>A = 90 - 100%</li>
+                <li>B = 80 - 89%</li>
+                <li>C = 70 - 79%</li>
+                <li>D = 60 - 69%</li>
+                <li>F = Below 60%</li>
+            </ul>
+            <p style="margin-bottom: 5px;">Additional methods of evaluation may be used and described in the course outline.</p>
+            <p class="tight-spacing">One or more of the six general education assessments may be included in this course: written communication, oral communication, critical thinking, teamwork skills, global awareness, and/or math reasoning.</p>
+        </div>
+
+        <div contenteditable="false" id="attendance-section" data-key="attendance-section">
+            <h2>Attendance Policy</h2>
+            <p>Regular attendance is expected for success in this course. Attendance will be monitored throughout the semester. Please be aware that for every two classes missed, your final grade will be reduced by one letter grade (equivalent to a deduction of 100 points). Consistent participation is crucial for mastering the course material.</p>
+        </div>
+        
+        <div id="weekly-schedule-section">
+            <h2>Weekly Schedule (8-Week Session)</h2>
+            <div class="weekly-schedule">
+
+                <details open>
+                    <summary>Week 1: Introduction, Business Environment, & Ethics</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-1-content">
+                        <p><strong>Reading:</strong> Chapter 14: Managerial Accounting and the Business Environment.</p>
+                        <p><strong>Topics:</strong> Role of managerial accounting in decision-making, financial statement analysis, ethical frameworks (B Corp Introduction).</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 14 Homework (20 points)</li>
+                            <li>Progressive Project Part 1: B Corp Introduction (5 points)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 2: Job-Order & Process Costing</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-2-content">
+                        <p><strong>Reading:</strong> Chapter 15: Job Order Costing Systems; Chapter 16: Process Costing Systems.</p>
+                        <p><strong>Topics:</strong> Job-order costing concepts, process costing systems, cost flow analysis, overhead allocation. Supply Chain Analysis.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 15 Homework (20 points)</li>
+                            <li>Chapter 16 Homework (20 points)</li>
+                            <li>Progressive Project Part 2: Supply Chain Analysis (35 pts.)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 3: Activity-Based Costing & Cost Behavior</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-3-content">
+                        <p><strong>Reading:</strong> Chapter 17: Activity-Based Costing; Chapter 18: Cost Behavior.</p>
+                        <p><strong>Topics:</strong> Applying activity-based costing (ABC), fixed vs. variable cost analysis, cost drivers. Production Analysis.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 17 Homework (20 points)</li>
+                            <li>Chapter 18 Homework (20 points)</li>
+                            <li>Project #1: Job-Order and Process Costing (50 points)</li>
+                            <li>Quiz #1: Chapters 14-16 (50 points)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 4: CVP Analysis & Mid-Term Exam</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-4-content">
+                        <p><strong>Reading:</strong> Chapter 19: CVP Relationships and Break-Even Analysis.</p>
+                        <p><strong>Topics:</strong> Cost-Volume-Profit (CVP) relationships, break-even analysis, contribution margin. Mid-Term Examination.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 19 Homework (20 points)</li>
+                            <li>Progressive Project Part 3: Production Analysis (35 pts.)</li>
+                            <li>Mid-term Examination: Chapters 14-19 (100 points)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 5: Master Budgets</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-5-content">
+                        <p><strong>Reading:</strong> Chapter 20: Master Budgets.</p>
+                        <p><strong>Topics:</strong> Comprehensive master budget formulation, pro-forma financial statements, planning and control. Marketing Analysis.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 20 Homework (20 points)</li>
+                            <li>Quiz #2: Chapters 17-19 (50 points)</li>
+                            <li>Progressive Project Part 4: Marketing Analysis (35 pts.)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 6: Standard Costs & Relevant Costs</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-6-content">
+                        <p><strong>Reading:</strong> Chapter 21: Standard Costs and Variances; Chapter 22: Relevant Costs.</p>
+                        <p><strong>Topics:</strong> Calculation and analysis of standard cost variances. Differential costs and decision making.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 21 Homework (20 points)</li>
+                            <li>Chapter 22 Homework (20 points)</li>
+                            <li>Progressive Project Part 5: Customer Service Analysis (35 pts.)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 7: Performance Measurement & Capital Budgeting</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-7-content">
+                        <p><strong>Reading:</strong> Chapter 23: Performance Measurement; Chapter 24: Capital Budgeting Decisions.</p>
+                        <p><strong>Topics:</strong> Responsibility accounting, ROI, residual income. Capital investment analysis methods (NPV, IRR). Customer Service Analysis.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Chapter 23 Homework (20 points)</li>
+                            <li>Chapter 24 Homework (20 points)</li>
+                            <li>Progressive Project Part 6: Sustainability Analysis (35 pts.)</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details>
+                    <summary>Week 8: Final Exam</summary>
+                    <div class="week-content" contenteditable="false" data-key="week-8-content">
+                        <p><strong>Reading:</strong> Review all chapters and analyses.</p>
+                        <p><strong>Topics:</strong> Comprehensive review and final assessment.</p>
+                        <p><strong>Assignments:</strong></p>
+                        <ul class="assignment-list">
+                            <li>Project #3: Budgeting and Performance Measurement (50 points)</li>
+                            <li>Quiz #3: Chapters 20-22 (50 points)</li>
+                            <li>Progressive Project Part 7: Comprehensive Management Report & Video (70 pts)</li>
+                            <li>Final Examination (100 points)</li>
+                        </ul>
+                    </div>
+                </details>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        // REMOVED setLogLevel from here
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        // ADDED setLogLevel here (Correct Module)
+        import { getFirestore, doc, setDoc, onSnapshot, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // IMPORTANT: Firebase Global Variables from Canvas Environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        const editableElements = document.querySelectorAll('#syllabus-content [data-key]');
+        const editToggleBtn = document.getElementById('editToggle');
+        const downloadPdfBtn = document.getElementById('downloadPdf');
+        const statusMessage = document.getElementById('status-message');
+        
+        let isEditing = false;
+        let db, auth;
+        let userId = null;
+        let docRef;
+
+        // --- FIREBASE INITIALIZATION AND AUTHENTICATION ---
+
+        async function initFirebase() {
+            try {
+                // Ensure firebaseConfig exists before initializing
+                if (!firebaseConfig || Object.keys(firebaseConfig).length === 0) {
+                   console.error("Firebase config missing.");
+                   statusMessage.textContent = "Error: Firebase Configuration Missing.";
+                   return;
+                }
+
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Enable debug logging for Firestore
+                setLogLevel('debug');
+
+                // Sign in using custom token or anonymously
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                // Wait for auth state to stabilize and get userId
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        statusMessage.textContent = `User ID: ${userId} | Status: Ready.`;
+                        docRef = doc(db, 'artifacts', appId, 'users', userId, 'syllabus_data', 'managerial_accounting');
+                        
+                        editToggleBtn.textContent = 'Enable Editing';
+                        editToggleBtn.disabled = false;
+                        
+                        // Start listening for data changes
+                        startRealtimeListener();
+                    } else {
+                        statusMessage.textContent = "Status: Authentication failed.";
+                    }
+                });
+
+            } catch (error) {
+                console.error("Firebase Initialization Error:", error);
+                statusMessage.textContent = "Error loading application.";
+            }
+        }
+
+        // --- FIRESTORE DATA HANDLING ---
+
+        function saveSyllabusToFirestore() {
+            if (!userId || !docRef) {
+                console.warn("Firestore not ready. Cannot save data.");
+                statusMessage.textContent = "Status: Cannot save, not authenticated.";
+                return;
+            }
+
+            const syllabusData = {};
+            editableElements.forEach(element => {
+                const key = element.getAttribute('data-key');
+                syllabusData[key] = element.innerHTML;
+            });
+
+            setDoc(docRef, syllabusData)
+                .then(() => {
+                    statusMessage.textContent = "Status: Data saved automatically.";
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                    statusMessage.textContent = `Error saving data: ${error.message}`;
+                });
+        }
+
+        function loadSyllabusFromSnapshot(data) {
+            if (data && Object.keys(data).length > 0) {
+                editableElements.forEach(element => {
+                    const key = element.getAttribute('data-key');
+                    if (data[key] !== undefined) {
+                        element.innerHTML = data[key];
+                    }
+                });
+                statusMessage.textContent = "Status: Data loaded from cloud.";
+            } else {
+                statusMessage.textContent = "Status: Initial load complete (using default content).";
+            }
+        }
+
+        function startRealtimeListener() {
+            if (!docRef) return;
+
+            onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    loadSyllabusFromSnapshot(docSnap.data());
+                } else {
+                    // Document doesn't exist, use default content
+                    console.log("No saved data found.");
+                }
+            }, (error) => {
+                console.error("Error listening to document:", error);
+                statusMessage.textContent = `Realtime error: ${error.message}`;
+            });
+        }
+        
+        // --- EDITING LOGIC & LISTENERS ---
+
+        function attachSaveListeners() {
+            editableElements.forEach(element => {
+                element.addEventListener('input', saveSyllabusToFirestore);
+            });
+        }
+        
+        function detachSaveListeners() {
+             editableElements.forEach(element => {
+                element.removeEventListener('input', saveSyllabusToFirestore);
+            });
+        }
+
+        function toggleEditMode() {
+            if (!userId) {
+                // Should not happen if button is disabled, but good fallback
+                statusMessage.textContent = "Error: Authentication pending. Please wait.";
+                return;
+            }
+            
+            isEditing = !isEditing;
+
+            editableElements.forEach(element => {
+                element.setAttribute('contenteditable', isEditing ? 'true' : 'false');
+            });
+            
+            if (isEditing) {
+                editToggleBtn.textContent = 'Disable Editing';
+                editToggleBtn.classList.add('editing');
+                attachSaveListeners();
+                statusMessage.textContent = "Status: Editing enabled. Changes auto-save.";
+            } else {
+                editToggleBtn.textContent = 'Enable Editing';
+                editToggleBtn.classList.remove('editing');
+                detachSaveListeners();
+                statusMessage.textContent = "Status: Editing disabled. View-only mode.";
+            }
+        }
+
+        // --- PDF DOWNLOAD ---
+        
+        function downloadPdf() {
+            // Temporarily disable editing border/background for clean PDF
+            const wasEditing = isEditing;
+            const tempStyles = [];
+
+            if (wasEditing) {
+                 editableElements.forEach(element => {
+                    // Store current styles to revert later
+                    tempStyles.push({ 
+                        element: element, 
+                        border: element.style.border, 
+                        backgroundColor: element.style.backgroundColor 
+                    });
+                    
+                    element.style.border = 'none';
+                    element.style.backgroundColor = 'transparent';
+                });
+            }
+            
+            // Hide controls for PDF
+            const controlsDisplay = document.querySelector('.controls').style.display;
+            document.querySelector('.controls').style.display = 'none';
+
+            const element = document.getElementById('syllabus-content');
+            
+            // Configuration for html2pdf
+            const opt = {
+                margin: 10,
+                filename: 'ACCT132_Syllabus.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, logging: false, dpi: 192, letterRendering: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Call the library function
+            html2pdf().set(opt).from(element).save().then(function() {
+                // Restore editing border/background after PDF generation
+                if (wasEditing) {
+                    tempStyles.forEach(item => {
+                        item.element.style.border = item.border;
+                        item.element.style.backgroundColor = item.backgroundColor;
+                    });
+                }
+                // Restore controls
+                document.querySelector('.controls').style.display = controlsDisplay;
+            });
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Start Firebase initialization and authentication process
+            initFirebase();
+
+            // 1. Set initial contenteditable state to false (protected)
+            editableElements.forEach(element => {
+                element.setAttribute('contenteditable', 'false');
+            });
+
+            // 2. Attach button listeners
+            editToggleBtn.addEventListener('click', toggleEditMode);
+            downloadPdfBtn.addEventListener('click', downloadPdf);
+        });
+    </script>
+
+</body>
+</html>
