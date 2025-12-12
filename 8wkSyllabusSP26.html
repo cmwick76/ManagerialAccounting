@@ -188,6 +188,56 @@
         padding: 10px 20px;
       }
     }
+
+      /* Schedule Table Styling */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .schedule-table thead {
+    background: var(--trailblazer-blue);
+    color: var(--white);
+  }
+
+  .schedule-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: 700;
+    border: 1px solid #ddd;
+  }
+
+  .schedule-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    vertical-align: top;
+  }
+
+  .schedule-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+  }
+
+  .schedule-table tbody tr:hover {
+    background: #f0f0f0;
+  }
+
+  .schedule-table td:first-child {
+    font-weight: 700;
+    color: var(--trailblazer-blue);
+    white-space: nowrap;
+    width: 100px;
+  }
+
+  .schedule-table td:nth-child(2) {
+    width: 50%;
+  }
+
+  .schedule-table td:nth-child(3) {
+    width: 35%;
+  }
   </style>
 </head>
 
@@ -377,17 +427,57 @@
         </div>
       </div>
       <div class="section-content" contenteditable="false">
-        <ul>
-          <li><strong>Week 1:</strong> Chapter 14 – Introduction to managerial accounting, cash flows, and financial statement analysis; Progressive Project Part 1: B‑Corp introduction. [file:2]</li>
-          <li><strong>Week 2:</strong> Chapter 15 – Job‑order costing; Progressive Project Part 2: Supply chain analysis. [file:2]</li>
-          <li><strong>Week 3:</strong> Chapter 16 – Process costing; Project 1 and Quiz 1 (Chs. 14–16). [file:2]</li>
-          <li><strong>Week 4:</strong> Chapters 17–19 – Activity‑based costing and cost‑volume‑profit analysis; Project 2 and Quiz 2. [file:2]</li>
-          <li><strong>Week 5:</strong> Mid‑term exam covering Chapters 14–19. [file:2]</li>
-          <li><strong>Week 6:</strong> Chapter 20 – Budgeting and master budgets. [file:2]</li>
-          <li><strong>Week 7:</strong> Chapters 21–22 – Standard costs, variance analysis, and performance measurement; Progressive Project Part 5 and Quiz 3. [file:2]</li>
-          <li><strong>Week 8:</strong> Chapters 23–24 – Relevant costs and capital budgeting; Project 3, Quiz 4, final exam, and comprehensive Upcycled Bag Company project. [file:2]</li>
-        </ul>
-        <p class="muted">Schedule is subject to change; updates will be communicated in class or via the learning management system. [file:2]</p>
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Week</th>
+            <th>Content Covered</th>
+            <th>Assignments</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 1</td>
+            <td>Chapter 14 – Introduction to managerial accounting, cash flows, and financial statement analysis</td>
+            <td>Progressive Project Part 1: B-Corp introduction</td>
+          </tr>
+          <tr>
+            <td>Week 2</td>
+            <td>Chapter 15 – Job-order costing</td>
+            <td>Progressive Project Part 2: Supply chain analysis</td>
+          </tr>
+          <tr>
+            <td>Week 3</td>
+            <td>Chapter 16 – Process costing</td>
+            <td>Project 1 and Quiz 1 (Chs. 14–16)</td>
+          </tr>
+          <tr>
+            <td>Week 4</td>
+            <td>Chapters 17–19 – Activity-based costing and cost-volume-profit analysis</td>
+            <td>Project 2 and Quiz 2</td>
+          </tr>
+          <tr>
+            <td>Week 5</td>
+            <td>Mid-term exam covering Chapters 14–19</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Week 6</td>
+            <td>Chapter 20 – Budgeting and master budgets</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>Week 7</td>
+            <td>Chapters 21–22 – Standard costs, variance analysis, and performance measurement</td>
+            <td>Progressive Project Part 5 and Quiz 3</td>
+          </tr>
+          <tr>
+            <td>Week 8</td>
+            <td>Chapters 23–24 – Relevant costs and capital budgeting</td>
+            <td>Project 3, Quiz 4, final exam, and comprehensive Upcycled Bag Company project</td>
+          </tr>
+        </tbody>
+      </table>        <p class="muted">Schedule is subject to change; updates will be communicated in class or via the learning management system. [file:2]</p>
       </div>
     </section>
 
