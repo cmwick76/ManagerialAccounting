@@ -207,7 +207,6 @@
     </div>
     <div class="toolbar-right">
       <button id="toggleAllEdit" class="secondary">Toggle All Editing</button>
-      <button id="hideAllButtons" class="danger">Hide All Edit Buttons</button>
       <button id="downloadPdf">Download PDF</button>
     </div>
   </div>
@@ -423,6 +422,14 @@
 
     // Toolbar: toggle all editing
     document.getElementById("toggleAllEdit").addEventListener("click", () => {
+          // Password protection
+    const correctPassword = "syllabus2026";
+    const userPassword = prompt("Enter password to toggle editing:");
+    if (userPassword !== correctPassword) {
+      alert("Incorrect password. Access denied.");
+      return;
+    }
+
       document.querySelectorAll(".section").forEach(section => {
         const content = section.querySelector(".section-content");
         const editBtn = section.querySelector(".edit");
@@ -440,14 +447,6 @@
       });
     });
 
-    // Toolbar: hide all edit buttons
-    document.getElementById("hideAllButtons").addEventListener("click", () => {
-      document.querySelectorAll(".section-controls").forEach(ctrl => {
-        ctrl.style.display = "none";
-      });
-    });
-
-    // PDF download using html2pdf
     document.getElementById("downloadPdf").addEventListener("click", () => {
       const element = document.getElementById("syllabus");
       const opt = {
