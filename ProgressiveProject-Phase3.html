@@ -35,6 +35,7 @@
             color: var(--white);
             padding: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                        position: relative;
         }
 
         .header-content {
@@ -54,6 +55,28 @@
             font-size: 1.1rem;
             font-weight: 400;
             opacity: 0.95;
+        }
+
+                .print-button {
+            position: absolute;
+            bottom: 1rem;
+            right: 2rem;
+            background: var(--sunglow);
+            color: var(--primary-blue);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .print-button:hover {
+            background: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         .accent-bar {
@@ -517,6 +540,7 @@
             <h1>Phase 3: Process Costing & Advanced Pivot Analysis</h1>
             <p>Apex Manufacturing Solutions | Chapter 16</p>
         </div>
+                <button onclick="window.print()" class="print-button">Print PDF</button>
     </div>
     <div class="accent-bar"></div>
 
