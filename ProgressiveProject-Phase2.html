@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 2: Job Order Costing & Pivot Tables | Apex Manufacturing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Brand Colors - Apex Manufacturing */
+        :root {
+            --primary-blue: #0033A0;
+            --sunglow: #FFCB1F;
+            --battleship-gray: #898989;
+            --white: #FFFFFF;
+            --black: #000000;
+            --success-green: #5CB85C;
+            --error-red: #D9534F;
+        }
+
+        .header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--sunglow) 0%, var(--primary-blue) 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--sunglow);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .tutorial-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .tutorial-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 3rem;
+            transition: color 0.3s ease;
+        }
+
+        .tutorial-section h2::after {
+            content: '▼';
+            position: absolute;
+            right: 0.5rem;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-section.collapsed h2::after {
+            transform: rotate(90deg);
+        }
+
+        .tutorial-section h2:hover {
+            color: #0047cc;
+        }
+
+        .tutorial-section .tutorial-content {
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tutorial-section.collapsed .tutorial-content {
+            max-height: 0;
+        }
+
+        .tutorial-section h3 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+            border-left: 4px solid var(--sunglow);
+            padding-left: 1rem;
+        }
+
+        .tutorial-section h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .step-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .step-list ol {
+            margin-left: 1.5rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .step-list li strong {
+            color: var(--primary-blue);
+        }
+
+        .code-example {
+            background: #263238;
+            color: #aed581;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .code-example .comment {
+            color: #80CBC4;
+        }
+
+        .code-example .function {
+            color: #FFD54F;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success-green);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff9800;
+            font-weight: 700;
+        }
+
+        .example-table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .example-table th {
+            background: var(--battleship-gray);
+            color: var(--white);
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .example-table td {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tutorial-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+        }
+
+        .tutorial-nav a {
+            flex: 1;
+            min-width: 200px;
+            padding: 1rem;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid var(--primary-blue);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-nav a:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,51,160,0.2);
+        }
+
+        .visual-example {
+            background: var(--white);
+            border: 2px solid #dee2e6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .excel-cell {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 0.25rem;
+            font-weight: 600;
+        }
+
+        .excel-cell.formula {
+            background: #fff9e6;
+            border-color: var(--sunglow);
+        }
+
+        .excel-cell.result {
+            background: #e8f5e9;
+            border-color: var(--success-green);
+        }
+
+        .instructions {
+            background: #fff9e6;
+            border-left: 5px solid var(--sunglow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .check-figures-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0047cc 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,51,160,0.3);
+            margin-top: 2rem;
+            color: var(--white);
+        }
+
+        .check-figures-section h3 {
+            color: var(--sunglow);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .check-figures-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .check-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 203, 31, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: var(--sunglow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.2);
+        }
+
+        .check-item label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--sunglow);
+            font-size: 1.05rem;
+        }
+
+        .check-item input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .check-item input:focus {
+            outline: none;
+            border-color: var(--sunglow);
+            background: var(--white);
+        }
+
+        .check-item .feedback {
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .check-item .feedback.correct {
+            background: var(--success-green);
+            color: var(--white);
+            display: block;
+        }
+
+        .check-item .feedback.incorrect {
+            background: var(--error-red);
+            color: var(--white);
+            display: block;
+        }
+
+        .verify-all-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto 0;
+            padding: 1.2rem 2rem;
+            background: var(--sunglow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Raleway', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.3);
+        }
+
+        .verify-all-btn:hover {
+            background: #ffd84d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 203, 31, 0.4);
+        }
+
+        .verify-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .overall-score {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        .overall-score.show {
+            display: block;
+        }
+
+        .screenshot-example {
+            background: #f8f9fa;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .tutorial-nav {
+                flex-direction: column;
+            }
+
+            .tutorial-nav a {
+                min-width: auto;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--sunglow);
+            margin-left: 5px;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Phase 2: Job Order Costing & Introduction to Pivot Tables</h1>
+            <p>Apex Manufacturing Solutions | Chapter 15</p>
+        </div>
+    </div>
+    <div class="accent-bar"></div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Phase 2!</h2>
+            <p>This phase introduces you to Job Order Costing at Apex Manufacturing. You'll track costs for 15 different manufacturing jobs and learn to create your first pivot tables to analyze job profitability, departmental costs, and monthly trends. Download the Excel template from your Learning Management System and use these tutorials to master both accounting concepts and powerful Excel pivot table skills.</p>
+        </div>
+
+        <div class="instructions">
+            <h4>📋 Phase 2 Requirements:</h4>
+            <ul>
+                <li><strong>Job Order Costing:</strong> Calculate predetermined overhead rate, apply overhead to jobs, calculate total job costs</li>
+                <li><strong>Pivot Table Analysis (4 Tasks):</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Task 1: Costs by Department with % of total</li>
+                        <li>Task 2: Monthly job volume and costs analysis</li>
+                        <li>Task 3: Department by Month cost matrix with conditional formatting</li>
+                        <li>Task 4: Clustered column pivot chart</li>
+                    </ul>
+                </li>
+                <li><strong>Management Report:</strong> Include pivot table screenshots and analysis of department costs and monthly trends</li>
+                <li>Pivot tables count for 10% of Phase 2 grade</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-nav">
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">📊 Creating Pivot Tables</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">➕ Adding Fields</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">🔢 Aggregations</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">🎨 Formatting Pivot Tables</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">📈 Pivot Charts</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">🌡️ Conditional Formatting</a>
+        </div>
+
+        <!-- TUTORIAL 1: CREATING PIVOT TABLES -->
+        <div id="tutorial1" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial1')">📊 Tutorial 1: Creating Your First Pivot Table</h2>
+            <div class="tutorial-content">
+            <p>Pivot tables are one of Excel's most powerful features for analyzing and summarizing large datasets. Instead of writing complex formulas, you can drag and drop fields to instantly create summaries, comparisons, and insights.</p>
+
+            <h3>What is a Pivot Table?</h3>
+            <p>A pivot table takes your raw data (like 15 manufacturing jobs with details) and lets you quickly answer questions like:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>What's the total cost by department?</li>
+                <li>How many jobs did we complete each month?</li>
+                <li>Which customer had the highest total costs?</li>
+                <li>What percentage of total costs does each department represent?</li>
+            </ul>
+
+            <h3>Step-by-Step: Creating a Pivot Table</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select your data</strong> - Click anywhere in your job data table (Excel will auto-detect the range)</li>
+                    <li><strong>Go to Insert tab</strong> in the ribbon</li>
+                    <li><strong>Click "PivotTable"</strong> button (on the left side)</li>
+                    <li><strong>Choose where to place it:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li><strong>New Worksheet (Recommended):</strong> Creates a clean pivot table on a new tab</li>
+                            <li><strong>Existing Worksheet:</strong> Places it on current sheet (specify location)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click OK</strong></li>
+                    <li><strong>You'll see:</strong> Blank pivot table area on left, PivotTable Fields pane on right</li>
+                </ol>
+            </div>
+
+            <h3>Understanding the PivotTable Fields Pane</h3>
+            <p>This pane has two sections:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>What It Does</th>
+                        <th>Example for Job Costing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Field List (Top)</strong></td>
+                        <td>Shows all available columns from your data</td>
+                        <td>Job Number, Department, Direct Materials, Total Job Cost, etc.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rows</strong></td>
+                        <td>Categories going down (vertical)</td>
+                        <td>Department names (Fabrication, Assembly, Finishing)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Columns</strong></td>
+                        <td>Categories going across (horizontal)</td>
+                        <td>Month Completed (January, February, March...)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Values</strong></td>
+                        <td>Numbers to calculate (SUM, COUNT, AVERAGE)</td>
+                        <td>Total Job Cost, Direct Labor, Machine Hours</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Filters</strong></td>
+                        <td>Optional filters for the whole table</td>
+                        <td>Status (Completed/In Progress), Customer Name</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 PRO TIP:</strong> Always start with your data formatted as an Excel Table (Ctrl+T). This ensures your pivot table updates automatically when you add new jobs to your data!
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Total Costs by Department</strong></p>
+                <p>To answer "What's the total cost for each department?"</p>
+                <p>1. Drag <span class="excel-cell">Department</span> to ROWS</p>
+                <p>2. Drag <span class="excel-cell">Total Job Cost</span> to VALUES</p>
+                <p>Result: A simple table showing Fabrication $X, Assembly $Y, Finishing $Z</p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ COMMON MISTAKE:</strong> If your pivot table shows "Count of Total Job Cost" instead of "Sum of Total Job Cost", it means Excel thinks your cost column contains text. Check your source data - there might be a cell with text instead of a number (like "$1,234" with the dollar sign typed in).
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 2: ADDING FIELDS -->
+        <div id="tutorial2" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial2')">➕ Tutorial 2: Adding and Arranging Fields</h2>
+            <div class="tutorial-content">
+            <p>The power of pivot tables comes from how easily you can rearrange fields to answer different questions. Let's learn how to add, move, and organize fields.</p>
+
+            <h3>Adding Fields to Your Pivot Table</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Find the field</strong> in the Field List (top of pane)</li>
+                    <li><strong>Drag it</strong> to one of the four areas (Rows, Columns, Values, Filters)</li>
+                    <li><strong>Or check the box</strong> next to the field name - Excel auto-places it:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Text fields → go to Rows</li>
+                            <li>Number fields → go to Values (and SUM automatically)</li>
+                            <li>Date fields → go to Rows (and group by month automatically)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Moving Fields Around</h3>
+            <p>You can drag fields between areas to reorganize your analysis:</p>
+            <div class="visual-example">
+                <p><strong>Example: Switching Rows and Columns</strong></p>
+                <p><strong>Before:</strong> Rows = Department, Columns = (none)</p>
+                <p>Shows: List of departments with totals</p>
+                <p style="margin-top: 1rem;"><strong>After:</strong> Rows = Month, Columns = Department</p>
+                <p>Shows: Grid with months down the left, departments across the top</p>
+            </div>
+
+            <h3>Task 1: Costs by Department with % of Total</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Add Department</strong> to ROWS</li>
+                    <li><strong>Add Total Job Cost</strong> to VALUES (should show Sum of Total Job Cost)</li>
+                    <li><strong>Add Total Job Cost AGAIN</strong> to VALUES (drag it a second time)</li>
+                    <li><strong>Click the second "Sum of Total Job Cost"</strong> in VALUES area</li>
+                    <li><strong>Choose "Value Field Settings"</strong></li>
+                    <li><strong>Click "Show Values As" tab</strong></li>
+                    <li><strong>Select "% of Grand Total"</strong></li>
+                    <li><strong>Click OK</strong></li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Your pivot table should now show:</strong></p>
+                <div class="screenshot-example">
+                    Department | Sum of Total Job Cost | % of Total<br>
+                    Fabrication | $285,000 | 38%<br>
+                    Assembly | $310,000 | 41%<br>
+                    Finishing | $155,000 | 21%<br>
+                    Grand Total | $750,000 | 100%
+                </div>
+            </div>
+
+            <h3>Task 2: Monthly Job Volume and Costs</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Start fresh</strong> - Create a new pivot table from your job data</li>
+                    <li><strong>Add Month Completed</strong> to ROWS</li>
+                    <li><strong>Add Job Number</strong> to VALUES (will show "Count of Job Number" = # of jobs)</li>
+                    <li><strong>Add Total Job Cost</strong> to VALUES (will show "Sum of Total Job Cost")</li>
+                    <li><strong>Add Direct Materials</strong> to VALUES</li>
+                    <li><strong>Add Direct Labor Cost</strong> to VALUES</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 PRO TIP:</strong> You can rename fields in the pivot table! Right-click on "Sum of Total Job Cost" in your pivot table and type a cleaner name like "Total Cost" or "Job Cost".
+            </div>
+
+            <h3>Removing Fields</h3>
+            <p>To remove a field, simply drag it out of the area boxes back to the field list, or uncheck its box.</p>
+
+            <div class="warning-box">
+                <strong>⚠️ IMPORTANT:</strong> Don't delete rows or columns from your pivot table manually! Use the field pane to add/remove data. Manually deleting can break the pivot table.
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 3: AGGREGATIONS -->
+        <div id="tutorial3" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial3')">🔢 Tutorial 3: Understanding Aggregations (SUM, COUNT, AVERAGE)</h2>
+            <div class="tutorial-content">
+            <p>When you add a field to VALUES, Excel performs a calculation. By default it SUMs numbers and COUNTs text, but you can change this.</p>
+
+            <h3>Common Aggregation Functions</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Function</th>
+                        <th>What It Does</th>
+                        <th>When to Use</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sum</strong></td>
+                        <td>Adds all values</td>
+                        <td>Total costs, total hours, total materials</td>
+                        <td>Sum of Total Job Cost = $750,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Count</strong></td>
+                        <td>Counts how many items</td>
+                        <td>Number of jobs, number of customers</td>
+                        <td>Count of Job Number = 15 jobs</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Average</strong></td>
+                        <td>Mean (sum ÷ count)</td>
+                        <td>Average job cost, average labor hours</td>
+                        <td>Average of Total Job Cost = $50,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max</strong></td>
+                        <td>Highest value</td>
+                        <td>Largest job cost, most hours</td>
+                        <td>Max of Total Job Cost = $85,000</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Min</strong></td>
+                        <td>Lowest value</td>
+                        <td>Smallest job cost, fewest hours</td>
+                        <td>Min of Total Job Cost = $12,000</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Changing the Aggregation Function</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click the field</strong> in the VALUES area (e.g., "Sum of Total Job Cost")</li>
+                    <li><strong>Choose "Value Field Settings"</strong></li>
+                    <li><strong>Select the function</strong> you want from the list</li>
+                    <li><strong>Optional:</strong> Change the "Custom Name" to something clearer</li>
+                    <li><strong>Click OK</strong></li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Finding Average Job Cost by Department</strong></p>
+                <p>1. Department in ROWS</p>
+                <p>2. Total Job Cost in VALUES</p>
+                <p>3. Click "Sum of Total Job Cost" → Value Field Settings</p>
+                <p>4. Change to "Average"</p>
+                <p>5. Custom Name: "Avg Job Cost"</p>
+                <p><strong>Result:</strong> Shows Fabrication avg $47,500, Assembly avg $51,667, etc.</p>
+            </div>
+
+            <h3>Show Values As (Advanced Calculations)</h3>
+            <p>Beyond basic aggregations, you can show values as percentages, differences, running totals, and more.</p>
+
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Show Values As</th>
+                        <th>What It Shows</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>% of Grand Total</strong></td>
+                        <td>Each value as % of overall total</td>
+                        <td>What % of costs is each department?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>% of Column Total</strong></td>
+                        <td>Each value as % of its column</td>
+                        <td>Within each month, what % is each department?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>% of Row Total</strong></td>
+                        <td>Each value as % of its row</td>
+                        <td>For each department, what % is each month?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Running Total</strong></td>
+                        <td>Cumulative sum</td>
+                        <td>Year-to-date cumulative costs by month</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Difference From</strong></td>
+                        <td>Variance from a base value</td>
+                        <td>Cost difference vs. January</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 MULTI-VALUE ANALYSIS:</strong> You can add the same field multiple times to VALUES! Add Total Job Cost three times, then set one to SUM, one to AVERAGE, and one to COUNT. Instant comprehensive analysis!
+            </div>
+
+            <div class="code-example">
+<span class="comment">// Quick calculation examples</span>
+Department in ROWS + Total Cost in VALUES = <span class="function">Total by department</span>
+Customer in ROWS + Job Number in VALUES = <span class="function">Count of jobs per customer</span>
+Month in ROWS + Direct Labor in VALUES = <span class="function">Monthly labor costs</span>
+Department in ROWS + Machine Hours (Average) = <span class="function">Avg hours per dept</span>
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 4: FORMATTING PIVOT TABLES -->
+        <div id="tutorial4" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial4')">🎨 Tutorial 4: Professional Pivot Table Formatting</h2>
+            <div class="tutorial-content">
+            <p>Raw pivot tables are functional but not pretty. Professional formatting makes your analysis easy to read and presentation-ready.</p>
+
+            <h3>Applying a Pivot Table Style</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click anywhere</strong> in your pivot table</li>
+                    <li><strong>PivotTable Design tab</strong> appears in ribbon</li>
+                    <li><strong>Browse the PivotTable Styles</strong> gallery</li>
+                    <li><strong>Hover to preview</strong>, click to apply</li>
+                    <li><strong>Recommended:</strong> Choose a style with blue headers to match Apex branding</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 CUSTOM COLORS:</strong> In PivotTable Design tab, click the dropdown below the styles gallery. Choose "New PivotTable Style" to create one using Apex brand colors (#0033A0 for headers, #FFCB1F for accents).
+            </div>
+
+            <h3>Essential Formatting Options</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Location</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Banded Rows</strong></td>
+                        <td>Design tab → Checkboxes</td>
+                        <td>Alternating row colors for easier reading</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Banded Columns</strong></td>
+                        <td>Design tab → Checkboxes</td>
+                        <td>Alternating column colors</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Row/Column Headers</strong></td>
+                        <td>Design tab → Checkboxes</td>
+                        <td>Bold formatting for headers</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Grand Totals</strong></td>
+                        <td>Design tab → Grand Totals button</td>
+                        <td>Show/hide totals for rows and columns</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Subtotals</strong></td>
+                        <td>Design tab → Subtotals button</td>
+                        <td>Show totals for grouped items</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Report Layout</strong></td>
+                        <td>Design tab → Report Layout button</td>
+                        <td>Compact, Outline, or Tabular form</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Number Formatting in Pivot Tables</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Right-click any value</strong> in your pivot table</li>
+                    <li><strong>Choose "Value Field Settings"</strong></li>
+                    <li><strong>Click "Number Format"</strong> button at bottom</li>
+                    <li><strong>Select Currency</strong> (for dollar amounts) or Number (for ratios/counts)</li>
+                    <li><strong>Set decimal places</strong>:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>0 decimals for dollar amounts ($750,000)</li>
+                            <li>1-2 decimals for percentages (38.5%)</li>
+                            <li>0 decimals for counts (15 jobs)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click OK</strong> twice</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Before Formatting:</strong></p>
+                <div class="screenshot-example">
+                    Department | Sum of Total Job Cost<br>
+                    Fabrication | 285000<br>
+                    Assembly | 310000
+                </div>
+                <p style="margin-top: 1rem;"><strong>After Formatting:</strong></p>
+                <div class="screenshot-example" style="border-color: var(--success-green);">
+                    Department | Total Cost<br>
+                    Fabrication | $285,000<br>
+                    Assembly | $310,000
+                </div>
+            </div>
+
+            <h3>Task 3: Department by Month Matrix</h3>
+            <p>This creates a heat map view of costs:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Create new pivot table</strong></li>
+                    <li><strong>Add Department</strong> to ROWS</li>
+                    <li><strong>Add Month Completed</strong> to COLUMNS</li>
+                    <li><strong>Add Total Job Cost</strong> to VALUES</li>
+                    <li><strong>Format as Currency</strong> with 0 decimals</li>
+                    <li><strong>Apply a professional style</strong> (blue theme recommended)</li>
+                    <li>You'll see a grid: Departments down, Months across, Costs in cells</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ BLANK CELLS:</strong> If you see blank cells in your pivot table, it means there's no data for that combination (e.g., no Fabrication jobs in March). This is normal! You can right-click the pivot table → PivotTable Options → Display tab → "For empty cells show: 0" if you prefer zeros.
+            </div>
+
+            <h3>Column Width and Alignment</h3>
+            <p>Pivot tables often need width adjustments:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Double-click column border to auto-fit</li>
+                <li>Right-click column → Column Width → enter specific number</li>
+                <li>Select entire pivot table → Home → Format → AutoFit Column Width</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 5: PIVOT CHARTS -->
+        <div id="tutorial5" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial5')">📈 Tutorial 5: Creating Pivot Charts</h2>
+            <div class="tutorial-content">
+            <p>Pivot charts are dynamic charts linked to your pivot table. When you change the pivot table, the chart updates automatically!</p>
+
+            <h3>Creating a Pivot Chart</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click anywhere</strong> in your pivot table</li>
+                    <li><strong>Go to PivotTable Analyze tab</strong> (or Insert tab)</li>
+                    <li><strong>Click "PivotChart"</strong> button</li>
+                    <li><strong>Choose chart type:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li><strong>Clustered Column:</strong> Best for comparing categories (use for Task 4!)</li>
+                            <li><strong>Line:</strong> Best for trends over time</li>
+                            <li><strong>Pie:</strong> Best for showing parts of a whole (one series only)</li>
+                            <li><strong>Bar:</strong> Like column but horizontal</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click OK</strong></li>
+                </ol>
+            </div>
+
+            <h3>Task 4: Clustered Column Pivot Chart</h3>
+            <p>Create a chart showing Total Job Cost by Department:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Use your pivot table</strong> from Task 1 (Department in ROWS, Total Job Cost in VALUES)</li>
+                    <li><strong>Click in the pivot table</strong></li>
+                    <li><strong>PivotTable Analyze</strong> → PivotChart</li>
+                    <li><strong>Select "Clustered Column"</strong></li>
+                    <li><strong>Click OK</strong></li>
+                    <li><strong>Chart appears!</strong> You should see three bars (Fabrication, Assembly, Finishing)</li>
+                </ol>
+            </div>
+
+            <h3>Formatting Your Pivot Chart</h3>
+            <p>When you click the chart, two new tabs appear: Chart Design and Format</p>
+
+            <h4>Adding/Editing Chart Title</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click the chart title</strong> (says "Total" by default)</li>
+                    <li><strong>Type your title:</strong> "Total Job Cost by Department"</li>
+                    <li><strong>Or use Chart Design → Add Chart Element → Chart Title → Above Chart</strong></li>
+                </ol>
+            </div>
+
+            <h4>Changing Colors</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Chart Design tab</strong> → Change Colors dropdown</li>
+                    <li><strong>Choose a color scheme</strong> - Blue theme matches Apex branding</li>
+                    <li><strong>Or manually:</strong> Click a bar → Format tab → Shape Fill → choose color</li>
+                </ol>
+            </div>
+
+            <h4>Adding Data Labels</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Chart Design tab</strong> → Add Chart Element</li>
+                    <li><strong>Data Labels</strong> → Outside End</li>
+                    <li>Shows actual values ($285,000, etc.) on each bar</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Your clustered column chart should show:</strong></p>
+                <div class="screenshot-example">
+                    [Chart Title: "Total Job Cost by Department"]<br>
+                    Three vertical bars of different heights<br>
+                    X-axis: Fabrication, Assembly, Finishing<br>
+                    Y-axis: Dollar amounts<br>
+                    Data labels showing $285,000, $310,000, $155,000
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 CHART FILTERS:</strong> Pivot charts have filter buttons built-in! Click the filter icon on the chart to show/hide specific departments, months, or other fields without changing the underlying pivot table.
+            </div>
+
+            <h3>Advanced: Multi-Series Charts</h3>
+            <p>To show Department by Month (multiple series):</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Modify your pivot table:</strong> Department in ROWS, Month in COLUMNS, Total Cost in VALUES</li>
+                    <li><strong>Create pivot chart</strong> → Clustered Column</li>
+                    <li><strong>Result:</strong> Grouped bars showing each department's costs across all months</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ DON'T COPY/PASTE:</strong> Create pivot charts using the PivotChart button, not by creating a regular chart from pivot table data. Pivot charts stay linked to your pivot table for automatic updates!
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 6: CONDITIONAL FORMATTING -->
+        <div id="tutorial6" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial6')">🌡️ Tutorial 6: Conditional Formatting in Pivot Tables</h2>
+            <div class="tutorial-content">
+            <p>Conditional formatting applies color scales, data bars, or icons to highlight patterns and outliers in your pivot table.</p>
+
+            <h3>Applying Conditional Formatting to Task 3</h3>
+            <p>Remember Task 3 created a Department by Month matrix. Now let's add color to show which cells have the highest/lowest costs:</p>
+
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click in your pivot table</strong> (the one with Department × Month)</li>
+                    <li><strong>Select the VALUES area</strong> (click any cost number, then Ctrl+A selects all values)</li>
+                    <li><strong>Home tab</strong> → Conditional Formatting dropdown</li>
+                    <li><strong>Choose an option:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li><strong>Color Scales:</strong> Gradient from low (red) to high (green)</li>
+                            <li><strong>Data Bars:</strong> Bars inside cells showing relative values</li>
+                            <li><strong>Icon Sets:</strong> Arrows, traffic lights, or rating symbols</li>
+                        </ul>
+                    </li>
+                    <li><strong>Click your choice</strong></li>
+                </ol>
+            </div>
+
+            <h3>Recommended: Color Scale for Task 3</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select values in your pivot table</strong></li>
+                    <li><strong>Conditional Formatting</strong> → Color Scales</li>
+                    <li><strong>Choose "Green-Yellow-Red Color Scale"</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Green = Highest costs (most activity)</li>
+                            <li>Yellow = Medium costs</li>
+                            <li>Red = Lowest costs (least activity)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Your formatted matrix will look like:</strong></p>
+                <div class="screenshot-example">
+                    Department × Month grid with cells colored:<br>
+                    <span style="color: green;">■</span> Dark green cells = $80,000+ (busy months)<br>
+                    <span style="color: orange;">■</span> Yellow cells = $40,000-$80,000 (moderate)<br>
+                    <span style="color: red;">■</span> Red cells = Under $40,000 (slow months)<br>
+                    At a glance, you see which department-month combinations had highest costs!
+                </div>
+            </div>
+
+            <h3>Data Bars Option</h3>
+            <p>Data bars show relative size visually:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select pivot table values</strong></li>
+                    <li><strong>Conditional Formatting</strong> → Data Bars</li>
+                    <li><strong>Choose "Blue Data Bar"</strong> (matches Apex brand)</li>
+                    <li>Each cell shows a blue bar proportional to its value</li>
+                    <li>Numbers still visible, but bars make comparison instant</li>
+                </ol>
+            </div>
+
+            <h3>Custom Rules (Advanced)</h3>
+            <p>For more control, create custom rules:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Conditional Formatting</strong> → New Rule</li>
+                    <li><strong>Choose rule type</strong> (e.g., "Format cells that contain")</li>
+                    <li><strong>Set conditions:</strong> Greater than $75,000 → Fill green</li>
+                    <li><strong>Between $40,000 and $75,000</strong> → Fill yellow</li>
+                    <li><strong>Less than $40,000</strong> → Fill red</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 MANAGING RULES:</strong> Go to Conditional Formatting → Manage Rules to edit or delete rules. If your formatting looks wrong, you might have multiple conflicting rules applied.
+            </div>
+
+            <h3>Icon Sets for Trends</h3>
+            <p>Use icon sets to show performance levels:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select values</strong></li>
+                    <li><strong>Conditional Formatting</strong> → Icon Sets</li>
+                    <li><strong>Choose "3 Traffic Lights"</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>🟢 Green = Top 33% (high costs)</li>
+                            <li>🟡 Yellow = Middle 33%</li>
+                            <li>🔴 Red = Bottom 33% (low costs)</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ READABILITY:</strong> Don't over-format! Choose ONE type of conditional formatting per pivot table. Combining color scales + data bars + icons makes it confusing, not clearer.
+            </div>
+
+            <h3>Clearing Conditional Formatting</h3>
+            <p>To start over:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Select pivot table values</li>
+                <li>Conditional Formatting → Clear Rules → Clear Rules from Selected Cells</li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h4>🎯 Ready to Complete Phase 2!</h4>
+            <p style="margin-top: 0.5rem;">You now have all the skills needed to complete the pivot table assignments. Remember to:</p>
+            <ul style="margin-top: 0.5rem;">
+                <li>Create all 4 required pivot tables</li>
+                <li>Apply professional formatting and styles</li>
+                <li>Create the clustered column chart</li>
+                <li>Add conditional formatting to Task 3</li>
+                <li>Take screenshots for your management report</li>
+                <li>Write analysis explaining department costs and monthly trends</li>
+            </ul>
+        </div>
+
+        <div class="check-figures-section">
+            <h3>✓ Interactive Check Figures - Job Order Costing</h3>
+            <p>Enter your calculated values below to verify your job costing work. The system will provide immediate feedback!</p>
+
+            <div class="check-grid">
+                <div class="check-item">
+                    <label for="predeterminedRate">
+                        Predetermined OH Rate (per machine hour)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Estimated Total OH / Estimated Machine Hours</span>
+                        </span>
+                    </label>
+                    <input type="text" id="predeterminedRate" placeholder="Enter rate (e.g., 45.00)" oninput="checkValue(this, 42.50, 0.1)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="totalAppliedOH">
+                        Total Applied Overhead (all jobs)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Sum of overhead applied to all 15 jobs</span>
+                        </span>
+                    </label>
+                    <input type="text" id="totalAppliedOH" placeholder="Enter amount (e.g., 520,000)" oninput="checkValue(this, 478750)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="job105Cost">
+                        Total Cost for Job 105
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">DM + DL + Applied OH for Job 105</span>
+                        </span>
+                    </label>
+                    <input type="text" id="job105Cost" placeholder="Enter amount (e.g., 65,000)" oninput="checkValue(this, 58750)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="fabricationTotal">
+                        Total Costs - Fabrication Dept
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Sum of all job costs in Fabrication</span>
+                        </span>
+                    </label>
+                    <input type="text" id="fabricationTotal" placeholder="Enter amount (e.g., 300,000)" oninput="checkValue(this, 285000)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="jobCount">
+                        Number of Completed Jobs
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Count of jobs with Status = Completed</span>
+                        </span>
+                    </label>
+                    <input type="text" id="jobCount" placeholder="Enter count (e.g., 14)" oninput="checkValue(this, 12)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="avgJobCost">
+                        Average Job Cost (all 15 jobs)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Total of all job costs / 15</span>
+                        </span>
+                    </label>
+                    <input type="text" id="avgJobCost" placeholder="Enter amount (e.g., 55,000)" oninput="checkValue(this, 50000, 100)">
+                    <div class="feedback"></div>
+                </div>
+            </div>
+
+            <button class="verify-all-btn" onclick="verifyAll()">🎯 Verify All Answers</button>
+            
+            <div class="overall-score" id="overallScore"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers
+        const correctAnswers = {
+            predeterminedRate: 42.50,
+            totalAppliedOH: 478750,
+            job105Cost: 58750,
+            fabricationTotal: 285000,
+            jobCount: 12,
+            avgJobCost: 50000
+        };
+
+        // Store tolerance for each answer
+        const tolerances = {
+            predeterminedRate: 0.1,
+            totalAppliedOH: 0,
+            job105Cost: 0,
+            fabricationTotal: 0,
+            jobCount: 0,
+            avgJobCost: 100
+        };
+
+        function checkValue(input, correctValue, tolerance = 0) {
+            const feedbackDiv = input.nextElementSibling;
+            const userValue = parseFloat(input.value.replace(/[$,]/g, ''));
+            
+            if (isNaN(userValue)) {
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.style.display = 'none';
+                return false;
+            }
+
+            const difference = Math.abs(userValue - correctValue);
+            
+            if (difference <= tolerance) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✓ Correct!';
+                input.style.borderColor = 'var(--success-green)';
+                return true;
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                const percentOff = ((difference / correctValue) * 100).toFixed(1);
+                feedbackDiv.innerHTML = `✗ Not quite. You're ${percentOff}% off. Double-check your calculations.`;
+                input.style.borderColor = 'var(--error-red)';
+                return false;
+            }
+        }
+
+        function verifyAll() {
+            let correct = 0;
+            let total = 0;
+            
+            for (const [id, correctValue] of Object.entries(correctAnswers)) {
+                const input = document.getElementById(id);
+                const tolerance = tolerances[id] || 0;
+                total++;
+                
+                if (checkValue(input, correctValue, tolerance)) {
+                    correct++;
+                }
+            }
+            
+            const scoreDiv = document.getElementById('overallScore');
+            const percentage = ((correct / total) * 100).toFixed(0);
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage === '100') {
+                emoji = '🎉';
+                message = `Perfect! ${correct}/${total} correct!`;
+            } else if (percentage >= '75') {
+                emoji = '👍';
+                message = `Good work! ${correct}/${total} correct. Review the incorrect answers.`;
+            } else if (percentage >= '50') {
+                emoji = '📚';
+                message = `Keep trying! ${correct}/${total} correct. Review your calculations.`;
+            } else {
+                emoji = '💪';
+                message = `${correct}/${total} correct. Don't give up! Review the formulas and try again.`;
+            }
+            
+            scoreDiv.innerHTML = `${emoji} ${message}`;
+            scoreDiv.className = 'overall-score show';
+            
+            // Scroll to score
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Format inputs as currency on blur
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = parseFloat(this.value.replace(/[$,]/g, ''));
+                if (!isNaN(value) && this.id !== 'predeterminedRate' && this.id !== 'jobCount') {
+                    this.value = value.toLocaleString('en-US');
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.value = this.value.replace(/,/g, '');
+            });
+        });
+
+        // Collapsible tutorial functions
+        function toggleTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.toggle('collapsed');
+            }
+        }
+
+        function expandTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                // Expand the section if it's collapsed
+                tutorial.classList.remove('collapsed');
+                
+                // Smooth scroll to the tutorial with offset for header
+                setTimeout(() => {
+                    tutorial.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Initialize - expand all tutorials by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // All tutorials start expanded (no collapsed class)
+        });
+    </script>
+</body>
+</html>
