@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 6: Master Budgeting | Apex Manufacturing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Brand Colors - Apex Manufacturing */
+        :root {
+            --primary-blue: #0033A0;
+            --sunglow: #FFCB1F;
+            --battleship-gray: #898989;
+            --white: #FFFFFF;
+            --black: #000000;
+            --success-green: #5CB85C;
+            --error-red: #D9534F;
+        }
+
+        .header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--sunglow) 0%, var(--primary-blue) 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--sunglow);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .tutorial-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .tutorial-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 3rem;
+            transition: color 0.3s ease;
+        }
+
+        .tutorial-section h2::after {
+            content: '▼';
+            position: absolute;
+            right: 0.5rem;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-section.collapsed h2::after {
+            transform: rotate(90deg);
+        }
+
+        .tutorial-section h2:hover {
+            color: #0047cc;
+        }
+
+        .tutorial-section .tutorial-content {
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tutorial-section.collapsed .tutorial-content {
+            max-height: 0;
+        }
+
+        .tutorial-section h3 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+            border-left: 4px solid var(--sunglow);
+            padding-left: 1rem;
+        }
+
+        .tutorial-section h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .step-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .step-list ol {
+            margin-left: 1.5rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .step-list li strong {
+            color: var(--primary-blue);
+        }
+
+        .code-example {
+            background: #263238;
+            color: #aed581;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .code-example .comment {
+            color: #80CBC4;
+        }
+
+        .code-example .function {
+            color: #FFD54F;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success-green);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff9800;
+            font-weight: 700;
+        }
+
+        .example-table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .example-table th {
+            background: var(--battleship-gray);
+            color: var(--white);
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .example-table td {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tutorial-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+        }
+
+        .tutorial-nav a {
+            padding: 1rem;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid var(--primary-blue);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .tutorial-nav a:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,51,160,0.2);
+        }
+
+        .visual-example {
+            background: var(--white);
+            border: 2px solid #dee2e6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .excel-cell {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 0.25rem;
+            font-weight: 600;
+        }
+
+        .excel-cell.formula {
+            background: #fff9e6;
+            border-color: var(--sunglow);
+        }
+
+        .excel-cell.result {
+            background: #e8f5e9;
+            border-color: var(--success-green);
+        }
+
+        .instructions {
+            background: #fff9e6;
+            border-left: 5px solid var(--sunglow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .check-figures-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0047cc 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,51,160,0.3);
+            margin-top: 2rem;
+            color: var(--white);
+        }
+
+        .check-figures-section h3 {
+            color: var(--sunglow);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .check-figures-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .check-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 203, 31, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: var(--sunglow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.2);
+        }
+
+        .check-item label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--sunglow);
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .check-item input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .check-item input:focus {
+            outline: none;
+            border-color: var(--sunglow);
+            background: var(--white);
+        }
+
+        .check-item .feedback {
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .check-item .feedback.correct {
+            background: var(--success-green);
+            color: var(--white);
+            display: block;
+        }
+
+        .check-item .feedback.incorrect {
+            background: var(--error-red);
+            color: var(--white);
+            display: block;
+        }
+
+        .verify-all-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto 0;
+            padding: 1.2rem 2rem;
+            background: var(--sunglow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Raleway', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.3);
+        }
+
+        .verify-all-btn:hover {
+            background: #ffd84d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 203, 31, 0.4);
+        }
+
+        .verify-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .overall-score {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        .overall-score.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .tutorial-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--sunglow);
+            margin-left: 5px;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .flow-diagram {
+            background: #f0f7ff;
+            border: 2px solid var(--primary-blue);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .budget-box {
+            background: #fff9e6;
+            border: 2px solid var(--sunglow);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+
+        .budget-box h5 {
+            color: var(--primary-blue);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Phase 6: Master Budgeting</h1>
+            <p>Apex Manufacturing Solutions | Chapter 19</p>
+        </div>
+    </div>
+    <div class="accent-bar"></div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Phase 6!</h2>
+            <p>The master budget is a comprehensive financial plan that coordinates all activities across the organization. You'll build an integrated budgeting system that links sales forecasts to production needs, material purchases, labor requirements, overhead costs, and cash flows—culminating in budgeted financial statements. This is the financial roadmap that guides Apex's operations for the upcoming quarter!</p>
+        </div>
+
+        <div class="instructions">
+            <h4>📋 Phase 6 Requirements:</h4>
+            <ul>
+                <li><strong>Operating Budgets:</strong> Sales, Production, Direct Materials, Direct Labor, Manufacturing Overhead, Selling & Administrative Expense budgets</li>
+                <li><strong>Cash Budget:</strong> Cash receipts, cash payments, borrowing/repayment schedule with minimum cash balance requirement</li>
+                <li><strong>Financial Budgets:</strong> Budgeted Income Statement and Budgeted Balance Sheet</li>
+                <li><strong>Excel Integration:</strong> Link all budgets using cell references, create worksheet dependencies, build comprehensive financial model</li>
+                <li><strong>Management Report:</strong> Analyze budget feasibility, identify potential cash shortfalls, recommend financing strategies</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-nav">
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">📊 Master Budget Overview</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">🏭 Operating Budgets</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">💰 Cash Budget</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">🔗 Linking Worksheets</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">📈 Budgeted Statements</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">⚙️ Budget Assumptions</a>
+        </div>
+
+        <!-- TUTORIAL 1: MASTER BUDGET OVERVIEW -->
+        <div id="tutorial1" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial1')">📊 Tutorial 1: Master Budget Overview & Structure</h2>
+            <div class="tutorial-content">
+            <p>The master budget is the aggregation of all lower-level budgets into one comprehensive financial plan. It consists of operating budgets, financial budgets, and a cash budget.</p>
+
+            <h3>Master Budget Components</h3>
+            <div class="flow-diagram">
+┌─────────────────────────────────────────────┐
+│         MASTER BUDGET STRUCTURE             │
+├─────────────────────────────────────────────┤
+│                                             │
+│  1. SALES BUDGET ← Starting Point          │
+│           ↓                                  │
+│  2. PRODUCTION BUDGET                       │
+│           ↓                                  │
+│  3. DIRECT MATERIALS BUDGET                 │
+│           ↓                                  │
+│  4. DIRECT LABOR BUDGET                     │
+│           ↓                                  │
+│  5. MANUFACTURING OVERHEAD BUDGET           │
+│           ↓                                  │
+│  6. SELLING & ADMIN EXPENSE BUDGET          │
+│           ↓                                  │
+│  7. COST OF GOODS SOLD BUDGET               │
+│           ↓                                  │
+│  8. CASH BUDGET ← All cash impacts         │
+│           ↓                                  │
+│  9. BUDGETED INCOME STATEMENT               │
+│           ↓                                  │
+│  10. BUDGETED BALANCE SHEET                 │
+│                                             │
+└─────────────────────────────────────────────┘
+            </div>
+
+            <h3>Two Main Categories</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Budget Type</th>
+                        <th>Includes</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Operating Budgets</strong></td>
+                        <td>Sales, Production, DM, DL, MOH, S&A</td>
+                        <td>Plan day-to-day operations and COGS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Budgets</strong></td>
+                        <td>Cash Budget, Income Statement, Balance Sheet</td>
+                        <td>Show financial position and cash needs</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Why Master Budgeting Matters</h3>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Coordination:</strong> Ensures all departments work toward same goals</li>
+                <li><strong>Planning:</strong> Forces managers to think ahead and anticipate problems</li>
+                <li><strong>Control:</strong> Provides benchmarks for performance evaluation</li>
+                <li><strong>Communication:</strong> Quantifies management's plans for the organization</li>
+                <li><strong>Cash Management:</strong> Identifies financing needs before they become crises</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 CONTINUOUS PROCESS:</strong> Master budgeting isn't a one-time event. Most companies use rolling budgets—adding a new quarter as each quarter ends, maintaining a continuous 12-month planning horizon.
+            </div>
+
+            <h3>Budget Period</h3>
+            <p>Apex's master budget covers Q1 (January-March):</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Monthly detail:</strong> Separate budgets for Jan, Feb, Mar</li>
+                <li><strong>Quarterly total:</strong> Sum of three months</li>
+                <li><strong>Why quarterly?</strong> Balances detail (monthly) with manageability</li>
+            </ul>
+
+            <h3>Budget Assumptions - The Foundation</h3>
+            <p>Every budget starts with assumptions about:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Area</th>
+                        <th>Example Assumptions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Sales</strong></td>
+                        <td>Expected unit sales by month, selling prices</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Production</strong></td>
+                        <td>Inventory policies, production efficiency</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Costs</strong></td>
+                        <td>Material prices, wage rates, overhead rates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Collections</strong></td>
+                        <td>% collected in month of sale vs. later</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Payments</strong></td>
+                        <td>Payment terms with suppliers</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ GARBAGE IN, GARBAGE OUT:</strong> Budget quality depends on assumption quality. Unrealistic sales forecasts or cost estimates produce useless budgets. Use historical data, market research, and management judgment!
+            </div>
+
+            <h3>Participative vs. Imposed Budgeting</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Approach</th>
+                        <th>Description</th>
+                        <th>Pros/Cons</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Participative</strong></td>
+                        <td>Managers at all levels help create budget</td>
+                        <td>✓ Better buy-in, ✓ More accurate<br>✗ Time-consuming, ✗ May be padded</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Imposed (Top-Down)</strong></td>
+                        <td>Upper management creates and imposes budget</td>
+                        <td>✓ Faster, ✓ Consistent with strategy<br>✗ Less buy-in, ✗ May be unrealistic</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1rem;"><strong>Best practice:</strong> Hybrid approach—top management sets overall goals, departments develop detailed budgets to achieve them.</p>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 2: OPERATING BUDGETS -->
+        <div id="tutorial2" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial2')">🏭 Tutorial 2: Operating Budgets</h2>
+            <div class="tutorial-content">
+            <p>Operating budgets detail the income-generating activities: selling products and the costs to produce them.</p>
+
+            <h3>1. Sales Budget - The Starting Point</h3>
+            <p>Everything flows from expected sales. The sales budget drives all other budgets.</p>
+
+            <div class="budget-box">
+                <h5>Sales Budget Formula:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Expected Unit Sales × Selling Price per Unit = Total Sales Revenue
+                </p>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Apex Q1 Sales Budget</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>January</th>
+                            <th>February</th>
+                            <th>March</th>
+                            <th>Quarter</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Expected unit sales</td>
+                            <td>10,000</td>
+                            <td>12,000</td>
+                            <td>15,000</td>
+                            <td>37,000</td>
+                        </tr>
+                        <tr>
+                            <td>Selling price per unit</td>
+                            <td>$95</td>
+                            <td>$95</td>
+                            <td>$95</td>
+                            <td>$95</td>
+                        </tr>
+                        <tr style="background: #fff9e6; font-weight: bold;">
+                            <td>Total sales revenue</td>
+                            <td>$950,000</td>
+                            <td>$1,140,000</td>
+                            <td>$1,425,000</td>
+                            <td>$3,515,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>2. Production Budget</h3>
+            <p>How many units must we produce to meet sales AND maintain desired inventory?</p>
+
+            <div class="budget-box">
+                <h5>Production Budget Formula:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Units needed for sales<br>
+                + Desired ending inventory<br>
+                = Total needs<br>
+                - Beginning inventory<br>
+                = <strong>Units to produce</strong>
+                </p>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Apex Production Budget (January)</strong></p>
+                <p>Expected sales: 10,000 units</p>
+                <p>Desired ending inventory: 2,400 units (20% of next month's sales)</p>
+                <p>Beginning inventory: 2,000 units</p>
+                <p style="margin-top: 1rem;">
+                <span class="excel-cell">10,000 sales</span> + 
+                <span class="excel-cell">2,400 ending</span> - 
+                <span class="excel-cell">2,000 beginning</span> = 
+                <span class="excel-cell result">10,400 units to produce</span>
+                </p>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 INVENTORY POLICY:</strong> Common policy is ending inventory = X% of next month's sales. This buffers against stockouts while avoiding excess inventory costs. Typical range: 10-30%.
+            </div>
+
+            <h3>3. Direct Materials Budget</h3>
+            <p>How much raw material to purchase based on production needs?</p>
+
+            <div class="budget-box">
+                <h5>Materials Purchases Formula:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Materials needed for production (units × lbs per unit)<br>
+                + Desired ending materials inventory<br>
+                = Total materials needed<br>
+                - Beginning materials inventory<br>
+                = <strong>Materials to purchase</strong><br>
+                <br>
+                Materials to purchase × Cost per lb = <strong>Purchase cost</strong>
+                </p>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Direct Materials Budget</strong></p>
+                <p>Units to produce: 10,400</p>
+                <p>Materials per unit: 3 lbs</p>
+                <p>Materials needed: 10,400 × 3 = 31,200 lbs</p>
+                <p>+ Ending inventory: 7,200 lbs (20% of next month)</p>
+                <p>= Total needs: 38,400 lbs</p>
+                <p>- Beginning inventory: 6,240 lbs</p>
+                <p><span class="excel-cell result">= 32,160 lbs to purchase</span></p>
+                <p style="margin-top: 1rem;">At $12 per lb: <span class="excel-cell result">$385,920 purchase cost</span></p>
+            </div>
+
+            <h3>4. Direct Labor Budget</h3>
+            <p>Labor hours and cost needed for production.</p>
+
+            <div class="budget-box">
+                <h5>Direct Labor Budget Formula:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Units to produce × Labor hours per unit = Total labor hours<br>
+                Total labor hours × Wage rate per hour = <strong>Total labor cost</strong>
+                </p>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example:</strong></p>
+                <p>10,400 units × 0.5 hours/unit = 5,200 hours</p>
+                <p>5,200 hours × $18/hour = <span class="excel-cell result">$93,600 labor cost</span></p>
+            </div>
+
+            <h3>5. Manufacturing Overhead Budget</h3>
+            <p>Both variable and fixed overhead costs.</p>
+
+            <div class="budget-box">
+                <h5>Manufacturing Overhead Formula:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Variable OH = Production hours × Variable OH rate per hour<br>
+                + Fixed OH = Monthly fixed amount<br>
+                = <strong>Total manufacturing overhead</strong><br>
+                - Depreciation (non-cash)<br>
+                = <strong>Cash disbursement for overhead</strong>
+                </p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ NON-CASH ITEMS:</strong> Depreciation is an expense on income statement but doesn't require cash payment. Subtract it when calculating cash disbursements for overhead!
+            </div>
+
+            <h3>6. Selling & Administrative Expense Budget</h3>
+            <p>Period costs not tied to production volume.</p>
+
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Expense Type</th>
+                        <th>Variable or Fixed</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Variable S&A</strong></td>
+                        <td>Based on sales volume</td>
+                        <td>Sales commissions, shipping</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fixed S&A</strong></td>
+                        <td>Constant each month</td>
+                        <td>Salaries, rent, advertising</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Operating Budget Flow</h3>
+            <p>Notice how each budget uses information from the previous budget:</p>
+            <div class="flow-diagram">
+Sales Budget
+    ↓ (units)
+Production Budget
+    ↓ (units to produce)
+    ├→ Direct Materials Budget
+    ├→ Direct Labor Budget
+    └→ Manufacturing Overhead Budget
+         ↓ (all costs flow to)
+COGS Budget & Income Statement
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 3: CASH BUDGET -->
+        <div id="tutorial3" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial3')">💰 Tutorial 3: Cash Budget - The Critical Component</h2>
+            <div class="tutorial-content">
+            <p>The cash budget is often the most important budget because it reveals whether the company will have enough cash to operate, or if borrowing will be needed.</p>
+
+            <h3>Cash Budget Structure</h3>
+            <div class="budget-box">
+                <h5>Cash Budget Format:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Beginning cash balance<br>
+                + Cash receipts<br>
+                = Cash available<br>
+                - Cash disbursements<br>
+                = Excess or (deficiency)<br>
+                + Borrowing or - Repayments<br>
+                = <strong>Ending cash balance</strong>
+                </p>
+            </div>
+
+            <h3>1. Cash Receipts</h3>
+            <p>When will we actually collect cash from sales?</p>
+
+            <div class="visual-example">
+                <p><strong>Collection Pattern Example:</strong></p>
+                <p>Apex collects:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>70% in month of sale</li>
+                    <li>28% in month following sale</li>
+                    <li>2% uncollectible (bad debts)</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>January Collections:</strong></p>
+                <p>From January sales ($950,000): $950,000 × 70% = $665,000</p>
+                <p>From December sales ($900,000): $900,000 × 28% = $252,000</p>
+                <p><span class="excel-cell result">Total January receipts: $917,000</span></p>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 TIMING IS EVERYTHING:</strong> Sales ≠ Cash receipts! If you sell $100k in January but only collect $70k, you have $30k in accounts receivable. The cash budget tracks actual cash, not accrual accounting!
+            </div>
+
+            <h3>2. Cash Disbursements</h3>
+            <p>When will we actually pay cash for expenses?</p>
+
+            <h4>Materials Purchases:</h4>
+            <div class="visual-example">
+                <p><strong>Payment Pattern Example:</strong></p>
+                <p>Apex pays suppliers:</p>
+                <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                    <li>50% in month of purchase</li>
+                    <li>50% in month following purchase</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>January Payments:</strong></p>
+                <p>From January purchases ($385,920): $385,920 × 50% = $192,960</p>
+                <p>From December purchases ($375,000): $375,000 × 50% = $187,500</p>
+                <p><span class="excel-cell result">Total January payments: $380,460</span></p>
+            </div>
+
+            <h4>Other Disbursements:</h4>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Direct labor:</strong> Usually paid in month incurred</li>
+                <li><strong>Manufacturing overhead:</strong> Paid monthly (minus depreciation)</li>
+                <li><strong>S&A expenses:</strong> Paid monthly (minus depreciation)</li>
+                <li><strong>Capital expenditures:</strong> Equipment purchases</li>
+                <li><strong>Dividends:</strong> If declared</li>
+                <li><strong>Income taxes:</strong> Quarterly payments</li>
+            </ul>
+
+            <h3>3. Financing Section</h3>
+            <p>Managing the minimum cash balance requirement.</p>
+
+            <div class="visual-example">
+                <p><strong>Example: Apex Minimum Cash Balance = $50,000</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <tbody>
+                        <tr>
+                            <td>Beginning cash</td>
+                            <td style="text-align: right;">$65,000</td>
+                        </tr>
+                        <tr>
+                            <td>Add: Cash receipts</td>
+                            <td style="text-align: right;">917,000</td>
+                        </tr>
+                        <tr style="background: #f0f7ff;">
+                            <td><strong>Cash available</strong></td>
+                            <td style="text-align: right;"><strong>982,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Less: Cash disbursements</td>
+                            <td style="text-align: right;">(945,000)</td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td><strong>Excess (or deficiency)</strong></td>
+                            <td style="text-align: right;"><strong>37,000</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Minimum cash balance required</td>
+                            <td style="text-align: right;">(50,000)</td>
+                        </tr>
+                        <tr style="background: #ffebee;">
+                            <td><strong>Cash needed (shortfall)</strong></td>
+                            <td style="text-align: right;"><strong>(13,000)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Borrowing (rounded to $1,000s)</td>
+                            <td style="text-align: right;">13,000</td>
+                        </tr>
+                        <tr style="background: #e8f5e9;">
+                            <td><strong>Ending cash balance</strong></td>
+                            <td style="text-align: right;"><strong>$50,000</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Borrowing and Repayment</h3>
+            <p>Key rules for the financing section:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Borrow:</strong> When excess cash < minimum required</li>
+                <li><strong>Repay:</strong> When excess cash > minimum required (after meeting minimum)</li>
+                <li><strong>Interest:</strong> Paid on borrowed amounts (calculate based on loan terms)</li>
+                <li><strong>Round borrowing:</strong> Usually to nearest $1,000</li>
+                <li><strong>Repay in order borrowed:</strong> First in, first out</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ INTEREST CALCULATION:</strong> Interest is typically calculated on the outstanding loan balance each month. If you borrow $10,000 at 12% annual (1% monthly), you owe $100 interest the first month. This $100 is a cash disbursement in the NEXT month!
+            </div>
+
+            <h3>Why Cash Budget Matters Most</h3>
+            <p>Companies can be profitable but still fail due to cash problems:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Growing companies:</strong> May need cash for inventory/receivables before collecting from customers</li>
+                <li><strong>Seasonal businesses:</strong> Build inventory before high season, collect after</li>
+                <li><strong>Capital expenditures:</strong> Large equipment purchases require cash planning</li>
+                <li><strong>Debt payments:</strong> Principal and interest due regardless of profitability</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 CASH IS KING:</strong> "Revenue is vanity, profit is sanity, cash is reality!" You can't pay bills with accrual-basis profit. The cash budget shows whether you'll have actual dollars in the bank!
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 4: LINKING WORKSHEETS -->
+        <div id="tutorial4" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial4')">🔗 Tutorial 4: Linking Worksheets in Excel</h2>
+            <div class="tutorial-content">
+            <p>Master budgets require linking data across multiple worksheets. Changes in one budget automatically update dependent budgets.</p>
+
+            <h3>Why Link Worksheets?</h3>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Accuracy:</strong> No manual recopying of data between sheets</li>
+                <li><strong>Efficiency:</strong> Update one number, all dependent budgets recalculate</li>
+                <li><strong>What-if analysis:</strong> Change assumptions and see impact throughout</li>
+                <li><strong>Error reduction:</strong> Formulas prevent transcription errors</li>
+            </ul>
+
+            <h3>Basic Worksheet Reference Syntax</h3>
+            <div class="code-example">
+<span class="comment">// Reference a cell on another worksheet</span>
+=<span class="function">SheetName!CellAddress</span>
+
+<span class="comment">// Examples:</span>
+='Sales Budget'!B10        <span class="comment">// Space in name requires quotes</span>
+=Production!C15            <span class="comment">// No space, no quotes needed</span>
+='Cash Budget'!$D$20       <span class="comment">// Absolute reference</span>
+            </div>
+
+            <h3>Step-by-Step: Creating Worksheet Links</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Start typing formula</strong> in destination cell (e.g., =)</li>
+                    <li><strong>Click the source sheet tab</strong> (Excel adds sheet name)</li>
+                    <li><strong>Click the source cell</strong> (Excel adds cell address)</li>
+                    <li><strong>Press Enter</strong></li>
+                    <li>Excel creates: ='Source Sheet'!A1</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Linking Production Budget to Sales Budget</strong></p>
+                <p><strong>Goal:</strong> Use January sales (from Sales Budget) in Production Budget</p>
+                <p><strong>In Production Budget sheet, cell B8:</strong></p>
+                <p><span class="excel-cell formula">='Sales Budget'!B7</span></p>
+                <p style="margin-top: 0.5rem;">This pulls January unit sales from Sales Budget row 7, column B</p>
+            </div>
+
+            <h3>Common Linking Patterns in Master Budget</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>From (Source)</th>
+                        <th>To (Destination)</th>
+                        <th>What's Linked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sales Budget</td>
+                        <td>Production Budget</td>
+                        <td>Unit sales by month</td>
+                    </tr>
+                    <tr>
+                        <td>Production Budget</td>
+                        <td>DM Budget</td>
+                        <td>Units to produce</td>
+                    </tr>
+                    <tr>
+                        <td>Production Budget</td>
+                        <td>DL Budget</td>
+                        <td>Units to produce</td>
+                    </tr>
+                    <tr>
+                        <td>Sales Budget</td>
+                        <td>Cash Budget (Receipts)</td>
+                        <td>Sales revenue by month</td>
+                    </tr>
+                    <tr>
+                        <td>DM Budget</td>
+                        <td>Cash Budget (Payments)</td>
+                        <td>Purchases by month</td>
+                    </tr>
+                    <tr>
+                        <td>All budgets</td>
+                        <td>Income Statement</td>
+                        <td>Revenue and expenses</td>
+                    </tr>
+                    <tr>
+                        <td>Cash Budget</td>
+                        <td>Balance Sheet</td>
+                        <td>Ending cash balance</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Formula Best Practices</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Use descriptive sheet names:</strong> "Sales Budget" not "Sheet1"</li>
+                    <li><strong>Organize logically:</strong> Tabs in budget flow order (Sales → Production → DM → DL...)</li>
+                    <li><strong>Use absolute references</strong> when copying formulas: $B$10</li>
+                    <li><strong>Add comments to complex formulas:</strong> Insert → New Comment</li>
+                    <li><strong>Color-code:</strong> Input cells (yellow), formula cells (white), linked cells (blue)</li>
+                    <li><strong>Lock assumptions:</strong> Protect worksheet with inputs visible</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 TRACE DEPENDENCIES:</strong> Use Formulas → Trace Precedents/Dependents to visualize links between sheets. This helps debug errors and understand the model structure!
+            </div>
+
+            <h3>Handling Circular References</h3>
+            <p>Sometimes budgets create circular references (A depends on B, B depends on A):</p>
+            <div class="warning-box">
+                <strong>⚠️ EXAMPLE:</strong> Interest expense depends on borrowing. Borrowing depends on cash needed. Cash needed depends on interest expense. Circular!
+                
+                <p style="margin-top: 0.5rem;"><strong>Solutions:</strong></p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Enable iterative calculations: File → Options → Formulas → Enable iterative calculation</li>
+                    <li>Or manually calculate interest in next period (simpler)</li>
+                    <li>Or use helper columns to break the circle</li>
+                </ul>
+            </div>
+
+            <h3>Testing Your Links</h3>
+            <p>Verify all links work correctly:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Change an assumption</strong> (e.g., January sales = 15,000 instead of 10,000)</li>
+                    <li><strong>Check that all dependent cells update:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Production budget units</li>
+                            <li>Materials purchases</li>
+                            <li>Cash receipts</li>
+                            <li>Income statement revenue</li>
+                        </ul>
+                    </li>
+                    <li><strong>Change assumption back</strong> to original value</li>
+                    <li><strong>Verify everything returns</strong> to original amounts</li>
+                </ol>
+            </div>
+
+            <h3>Documentation</h3>
+            <p>Create a "README" or "Assumptions" sheet that documents:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Where data comes from (sales forecast source, cost estimates)</li>
+                <li>Key assumptions (collection %, payment terms, inventory policy)</li>
+                <li>Sheet structure and flow</li>
+                <li>Contact person for questions</li>
+                <li>Last update date</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 5: BUDGETED STATEMENTS -->
+        <div id="tutorial5" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial5')">📈 Tutorial 5: Budgeted Financial Statements</h2>
+            <div class="tutorial-content">
+            <p>The master budget culminates in pro forma (budgeted) financial statements showing expected financial position.</p>
+
+            <h3>Budgeted Income Statement</h3>
+            <p>Pulls data from all operating budgets to show expected profitability.</p>
+
+            <div class="visual-example">
+                <p><strong>Apex Manufacturing - Budgeted Income Statement</strong></p>
+                <p><strong>For Quarter Ended March 31</strong></p>
+                <table class="example-table" style="font-size: 0.85rem; margin-top: 1rem;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Sales</strong></td>
+                            <td style="text-align: right;"><strong>$3,515,000</strong></td>
+                            <td style="font-size: 0.8rem;">From Sales Budget</td>
+                        </tr>
+                        <tr>
+                            <td>Cost of Goods Sold:</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;Direct Materials</td>
+                            <td style="text-align: right;">1,108,800</td>
+                            <td style="font-size: 0.8rem;">From DM Budget</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;Direct Labor</td>
+                            <td style="text-align: right;">332,640</td>
+                            <td style="font-size: 0.8rem;">From DL Budget</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;Manufacturing Overhead</td>
+                            <td style="text-align: right;">554,400</td>
+                            <td style="font-size: 0.8rem;">From MOH Budget</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Total COGS</strong></td>
+                            <td style="text-align: right;"><strong>(1,995,840)</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td><strong>Gross Margin</strong></td>
+                            <td style="text-align: right;"><strong>1,519,160</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>S&A Expenses:</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;Variable S&A</td>
+                            <td style="text-align: right;">140,600</td>
+                            <td style="font-size: 0.8rem;">From S&A Budget</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;&nbsp;Fixed S&A</td>
+                            <td style="text-align: right;">225,000</td>
+                            <td style="font-size: 0.8rem;">From S&A Budget</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td><strong>Total S&A</strong></td>
+                            <td style="text-align: right;"><strong>(365,600)</strong></td>
+                            <td></td>
+                        </tr>
+                        <tr style="background: #e8f5e9;">
+                            <td><strong>Net Operating Income</strong></td>
+                            <td style="text-align: right;"><strong>$1,153,560</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 ALL FORMULAS:</strong> Every line item should link to the appropriate budget. Never type numbers directly! This ensures the income statement automatically updates when budgets change.
+            </div>
+
+            <h3>Budgeted Balance Sheet</h3>
+            <p>Shows expected financial position at end of budget period.</p>
+
+            <h4>Balance Sheet Components:</h4>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Account</th>
+                        <th>Source</th>
+                        <th>Calculation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Cash</strong></td>
+                        <td>Cash Budget</td>
+                        <td>Ending cash balance (March)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accounts Receivable</strong></td>
+                        <td>Sales + Collections</td>
+                        <td>Beginning AR + Sales - Cash collections</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inventory (RM)</strong></td>
+                        <td>DM Budget</td>
+                        <td>Ending RM inventory × Cost per lb</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Inventory (FG)</strong></td>
+                        <td>Production + COGS</td>
+                        <td>Ending FG inventory × Cost per unit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PP&E (net)</strong></td>
+                        <td>Beginning + Additions</td>
+                        <td>Beginning PP&E + Purchases - Depreciation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Accounts Payable</strong></td>
+                        <td>Purchases + Payments</td>
+                        <td>Beginning AP + Purchases - Payments</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Notes Payable</strong></td>
+                        <td>Cash Budget</td>
+                        <td>Beginning balance + Borrowing - Repayments</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Retained Earnings</strong></td>
+                        <td>Income Statement</td>
+                        <td>Beginning RE + Net Income - Dividends</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ BALANCE SHEET MUST BALANCE!</strong> Assets = Liabilities + Equity. If it doesn't balance, you have an error in your budgets. Common culprits: forgot to link something, circular reference, typo in formula.
+            </div>
+
+            <h3>Beginning vs. Ending Balances</h3>
+            <p>Key to balance sheet construction:</p>
+            <div class="budget-box">
+                <h5>General Formula for Balance Sheet Accounts:</h5>
+                <p style="font-family: 'Courier New'; margin-top: 0.5rem;">
+                Beginning Balance<br>
+                + Increases (purchases, sales, borrowing)<br>
+                - Decreases (payments, collections, repayments)<br>
+                = <strong>Ending Balance</strong>
+                </p>
+            </div>
+
+            <h3>Supporting Schedules</h3>
+            <p>Some balance sheet items need detailed calculations:</p>
+
+            <h4>1. Accounts Receivable Schedule:</h4>
+            <div class="visual-example">
+                <p>Beginning AR: $250,000</p>
+                <p>+ Q1 Sales: $3,515,000</p>
+                <p>- Cash collections: $3,420,000</p>
+                <p>= <span class="excel-cell result">Ending AR: $345,000</span></p>
+            </div>
+
+            <h4>2. Inventory Schedules:</h4>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Raw Materials:</strong> From DM Budget ending inventory</li>
+                <li><strong>Finished Goods:</strong> Ending FG units × Unit product cost</li>
+                <li>No WIP inventory (simplifying assumption for Apex)</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>💡 UNIT PRODUCT COST:</strong> Calculate as DM + DL + MOH per unit. This becomes your FG inventory valuation. Example: $30 DM + $9 DL + $15 MOH = $54 per unit. If ending FG = 3,000 units, FG inventory = 3,000 × $54 = $162,000.
+            </div>
+
+            <h3>Budget vs. Actual</h3>
+            <p>After the period ends, compare budget to actual:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Budget</th>
+                        <th>Actual</th>
+                        <th>Variance</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sales</td>
+                        <td>$3,515,000</td>
+                        <td>$3,680,000</td>
+                        <td style="color: green;">+$165,000</td>
+                        <td>+4.7%</td>
+                    </tr>
+                    <tr>
+                        <td>Net Income</td>
+                        <td>$1,153,560</td>
+                        <td>$1,225,000</td>
+                        <td style="color: green;">+$71,440</td>
+                        <td>+6.2%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 0.5rem;">This variance analysis leads to Phase 7: Performance Measurement!</p>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 6: BUDGET ASSUMPTIONS -->
+        <div id="tutorial6" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial6')">⚙️ Tutorial 6: Budget Assumptions & Best Practices</h2>
+            <div class="tutorial-content">
+            <p>The quality of your master budget depends entirely on the quality of your assumptions.</p>
+
+            <h3>Critical Assumptions to Document</h3>
+            
+            <h4>1. Sales Assumptions</h4>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Unit sales forecast:</strong> Based on historical trends, market research, sales team input</li>
+                <li><strong>Pricing strategy:</strong> Will prices change? Discounts? Promotions?</li>
+                <li><strong>Seasonality:</strong> Are sales steady or does volume fluctuate?</li>
+                <li><strong>New products:</strong> Launching anything that affects volume?</li>
+                <li><strong>Competition:</strong> How might competitors affect our sales?</li>
+            </ul>
+
+            <h4>2. Production Assumptions</h4>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Inventory policy:</strong> How much buffer stock? (e.g., 20% of next month's sales)</li>
+                <li><strong>Production capacity:</strong> Can we produce what we need? Any constraints?</li>
+                <li><strong>Lead times:</strong> How long to produce a unit?</li>
+                <li><strong>Efficiency:</strong> Expected yield, waste, rework rates</li>
+            </ul>
+
+            <h4>3. Cost Assumptions</h4>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Cost Type</th>
+                        <th>Key Assumptions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Direct Materials</strong></td>
+                        <td>Price per unit, quantity per product, price changes, vendor reliability</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Direct Labor</strong></td>
+                        <td>Wage rates, hours per unit, overtime needs, raises/bonuses</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Overhead</strong></td>
+                        <td>Variable rate, fixed monthly costs, depreciation, utilities</td>
+                    </tr>
+                    <tr>
+                        <td><strong>S&A</strong></td>
+                        <td>Commission rates, advertising spend, salaries, rent</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>4. Cash Flow Assumptions</h4>
+            <div class="visual-example">
+                <p><strong>Collection Pattern (Critical!):</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>When Collected</th>
+                            <th>% of Sales</th>
+                            <th>Rationale</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Month of sale</td>
+                            <td>70%</td>
+                            <td>Cash sales + quick-pay customers</td>
+                        </tr>
+                        <tr>
+                            <td>Month after sale</td>
+                            <td>28%</td>
+                            <td>30-day credit terms</td>
+                        </tr>
+                        <tr>
+                            <td>Uncollectible</td>
+                            <td>2%</td>
+                            <td>Bad debts (expense but no cash)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top: 1rem;"><strong>Payment Pattern:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>What</th>
+                            <th>When Paid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Materials</td>
+                            <td>50% in purchase month, 50% next month</td>
+                        </tr>
+                        <tr>
+                            <td>Labor</td>
+                            <td>100% in month incurred</td>
+                        </tr>
+                        <tr>
+                            <td>Overhead</td>
+                            <td>100% in month incurred (minus depreciation)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Common Budgeting Pitfalls</h3>
+            <div class="warning-box">
+                <strong>⚠️ AVOID THESE MISTAKES:</strong>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li><strong>Overly optimistic sales:</strong> "Hockey stick" growth rarely happens</li>
+                    <li><strong>Static costs:</strong> Forgetting that costs increase with volume/inflation</li>
+                    <li><strong>Ignoring timing:</strong> Sales ≠ cash, expenses ≠ payments</li>
+                    <li><strong>Forgetting one-time items:</strong> Equipment purchases, bonuses, taxes</li>
+                    <li><strong>No contingency:</strong> Build in buffers for uncertainty</li>
+                    <li><strong>Complexity overkill:</strong> Don't model to the penny—round to meaningful amounts</li>
+                </ul>
+            </div>
+
+            <h3>Best Practices for Budgeting</h3>
+            
+            <div class="step-list">
+                <ol>
+                    <li><strong>Start with history:</strong> Use last year's actuals as baseline</li>
+                    <li><strong>Adjust for known changes:</strong> Price increases, new products, market shifts</li>
+                    <li><strong>Get input from all departments:</strong> Sales knows customers, production knows constraints</li>
+                    <li><strong>Document everything:</strong> Why did you assume 10,000 units? Write it down!</li>
+                    <li><strong>Build flexibility:</strong> Make it easy to update assumptions and recalculate</li>
+                    <li><strong>Sensitivity analysis:</strong> What if sales are 10% lower? Higher?</li>
+                    <li><strong>Review monthly:</strong> Don't create budget and forget it</li>
+                    <li><strong>Revise when needed:</strong> If assumptions change materially, update the budget</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 THE 80/20 RULE:</strong> Spend 80% of your time on the 20% of assumptions that matter most. Sales forecast and major costs are crucial. Don't agonize over whether office supplies will be $100 or $105 per month!
+            </div>
+
+            <h3>Contingency Planning</h3>
+            <p>Always prepare alternative scenarios:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Scenario</th>
+                        <th>Assumption Changes</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Best Case</strong></td>
+                        <td>Sales +15%, costs stable</td>
+                        <td>Strong profit, may need working capital</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Most Likely</strong></td>
+                        <td>Current plan</td>
+                        <td>Base budget</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Worst Case</strong></td>
+                        <td>Sales -15%, costs +5%</td>
+                        <td>Lower profit, may need financing</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Communicating the Budget</h3>
+            <p>Once complete, present the budget effectively:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Executive summary:</strong> 1-page overview of key numbers</li>
+                <li><strong>Assumptions document:</strong> Detail all major assumptions</li>
+                <li><strong>Variance analysis:</strong> Compare to last year, explain changes</li>
+                <li><strong>Action items:</strong> What must happen to achieve the budget?</li>
+                <li><strong>Risks:</strong> What could go wrong? Mitigation plans?</li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h4>🎯 Ready to Complete Phase 6!</h4>
+            <p style="margin-top: 0.5rem;">You've learned comprehensive master budgeting! Apply these skills:</p>
+            <ul style="margin-top: 0.5rem;">
+                <li>Prepare complete operating budgets (Sales → Production → DM → DL → MOH → S&A)</li>
+                <li>Build integrated cash budget with borrowing/repayment</li>
+                <li>Link all worksheets using cell references</li>
+                <li>Create budgeted income statement from operating budgets</li>
+                <li>Construct budgeted balance sheet with proper calculations</li>
+                <li>Document assumptions and test sensitivity</li>
+                <li>Analyze budget feasibility and financing needs</li>
+            </ul>
+        </div>
+
+        <div class="check-figures-section">
+            <h3>✓ Interactive Check Figures - Master Budgeting</h3>
+            <p>Enter your calculated values below to verify your master budget. The system will provide immediate feedback!</p>
+
+            <div class="check-grid">
+                <div class="check-item">
+                    <label for="q1Sales">
+                        Q1 Total Sales Revenue
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Sum of Jan + Feb + Mar sales</span>
+                        </span>
+                    </label>
+                    <input type="text" id="q1Sales" placeholder="Enter amount (e.g., 3,500,000)" oninput="checkValue(this, 3515000, 100)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janProduction">
+                        January Units to Produce
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Sales + End Inv - Begin Inv</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janProduction" placeholder="Enter units (e.g., 10,500)" oninput="checkValue(this, 10400, 10)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janMaterialsPurchase">
+                        January Materials Purchase Cost
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Lbs to purchase × Cost per lb</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janMaterialsPurchase" placeholder="Enter amount (e.g., 390,000)" oninput="checkValue(this, 385920, 100)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janLaborCost">
+                        January Direct Labor Cost
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Hours needed × Wage rate</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janLaborCost" placeholder="Enter amount (e.g., 95,000)" oninput="checkValue(this, 93600, 100)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janCashReceipts">
+                        January Cash Receipts
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Collections from current and prior sales</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janCashReceipts" placeholder="Enter amount (e.g., 920,000)" oninput="checkValue(this, 917000, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janMaterialsPayment">
+                        January Materials Payments
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Payments for current and prior purchases</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janMaterialsPayment" placeholder="Enter amount (e.g., 385,000)" oninput="checkValue(this, 380460, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="janEndingCash">
+                        January Ending Cash Balance
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">After receipts, payments, and financing</span>
+                        </span>
+                    </label>
+                    <input type="text" id="janEndingCash" placeholder="Enter amount (e.g., 52,000)" oninput="checkValue(this, 50000, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="q1NetIncome">
+                        Q1 Budgeted Net Operating Income
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">From budgeted income statement</span>
+                        </span>
+                    </label>
+                    <input type="text" id="q1NetIncome" placeholder="Enter amount (e.g., 1,150,000)" oninput="checkValue(this, 1153560, 1000)">
+                    <div class="feedback"></div>
+                </div>
+            </div>
+
+            <button class="verify-all-btn" onclick="verifyAll()">🎯 Verify All Answers</button>
+            
+            <div class="overall-score" id="overallScore"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers
+        const correctAnswers = {
+            q1Sales: 3515000,
+            janProduction: 10400,
+            janMaterialsPurchase: 385920,
+            janLaborCost: 93600,
+            janCashReceipts: 917000,
+            janMaterialsPayment: 380460,
+            janEndingCash: 50000,
+            q1NetIncome: 1153560
+        };
+
+        // Store tolerance for each answer
+        const tolerances = {
+            q1Sales: 100,
+            janProduction: 10,
+            janMaterialsPurchase: 100,
+            janLaborCost: 100,
+            janCashReceipts: 500,
+            janMaterialsPayment: 500,
+            janEndingCash: 500,
+            q1NetIncome: 1000
+        };
+
+        function checkValue(input, correctValue, tolerance = 0) {
+            const feedbackDiv = input.nextElementSibling;
+            const userValue = parseFloat(input.value.replace(/[$,%]/g, ''));
+            
+            if (isNaN(userValue)) {
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.style.display = 'none';
+                return false;
+            }
+
+            const difference = Math.abs(userValue - correctValue);
+            
+            if (difference <= tolerance) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✓ Correct!';
+                input.style.borderColor = 'var(--success-green)';
+                return true;
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                const percentOff = ((difference / correctValue) * 100).toFixed(1);
+                feedbackDiv.innerHTML = `✗ Not quite. You're ${percentOff}% off. Double-check your calculations.`;
+                input.style.borderColor = 'var(--error-red)';
+                return false;
+            }
+        }
+
+        function verifyAll() {
+            let correct = 0;
+            let total = 0;
+            
+            for (const [id, correctValue] of Object.entries(correctAnswers)) {
+                const input = document.getElementById(id);
+                const tolerance = tolerances[id] || 0;
+                total++;
+                
+                if (checkValue(input, correctValue, tolerance)) {
+                    correct++;
+                }
+            }
+            
+            const scoreDiv = document.getElementById('overallScore');
+            const percentage = ((correct / total) * 100).toFixed(0);
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage === '100') {
+                emoji = '🎉';
+                message = `Perfect! ${correct}/${total} correct!`;
+            } else if (percentage >= '75') {
+                emoji = '👍';
+                message = `Good work! ${correct}/${total} correct. Review the incorrect answers.`;
+            } else if (percentage >= '50') {
+                emoji = '📚';
+                message = `Keep trying! ${correct}/${total} correct. Review your calculations.`;
+            } else {
+                emoji = '💪';
+                message = `${correct}/${total} correct. Don't give up! Review the formulas and try again.`;
+            }
+            
+            scoreDiv.innerHTML = `${emoji} ${message}`;
+            scoreDiv.className = 'overall-score show';
+            
+            // Scroll to score
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Format inputs on blur
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = parseFloat(this.value.replace(/[$,%]/g, ''));
+                if (!isNaN(value)) {
+                    this.value = value.toLocaleString('en-US');
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.value = this.value.replace(/,/g, '');
+            });
+        });
+
+        // Collapsible tutorial functions
+        function toggleTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.toggle('collapsed');
+            }
+        }
+
+        function expandTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.remove('collapsed');
+                setTimeout(() => {
+                    tutorial.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Initialize - expand all tutorials by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // All tutorials start expanded (no collapsed class)
+        });
+    </script>
+</body>
+</html>
