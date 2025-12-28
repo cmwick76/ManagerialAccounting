@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 7: Variance Analysis & Performance Measurement | Apex Manufacturing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Brand Colors - Apex Manufacturing */
+        :root {
+            --primary-blue: #0033A0;
+            --sunglow: #FFCB1F;
+            --battleship-gray: #898989;
+            --white: #FFFFFF;
+            --black: #000000;
+            --success-green: #5CB85C;
+            --error-red: #D9534F;
+        }
+
+        .header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--sunglow) 0%, var(--primary-blue) 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--sunglow);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .tutorial-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .tutorial-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 3rem;
+            transition: color 0.3s ease;
+        }
+
+        .tutorial-section h2::after {
+            content: '▼';
+            position: absolute;
+            right: 0.5rem;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-section.collapsed h2::after {
+            transform: rotate(90deg);
+        }
+
+        .tutorial-section h2:hover {
+            color: #0047cc;
+        }
+
+        .tutorial-section .tutorial-content {
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tutorial-section.collapsed .tutorial-content {
+            max-height: 0;
+        }
+
+        .tutorial-section h3 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+            border-left: 4px solid var(--sunglow);
+            padding-left: 1rem;
+        }
+
+        .tutorial-section h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .step-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .step-list ol {
+            margin-left: 1.5rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .step-list li strong {
+            color: var(--primary-blue);
+        }
+
+        .code-example {
+            background: #263238;
+            color: #aed581;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .code-example .comment {
+            color: #80CBC4;
+        }
+
+        .code-example .function {
+            color: #FFD54F;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success-green);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff9800;
+            font-weight: 700;
+        }
+
+        .example-table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .example-table th {
+            background: var(--battleship-gray);
+            color: var(--white);
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .example-table td {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tutorial-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+        }
+
+        .tutorial-nav a {
+            padding: 1rem;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid var(--primary-blue);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .tutorial-nav a:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,51,160,0.2);
+        }
+
+        .visual-example {
+            background: var(--white);
+            border: 2px solid #dee2e6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .excel-cell {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 0.25rem;
+            font-weight: 600;
+        }
+
+        .excel-cell.formula {
+            background: #fff9e6;
+            border-color: var(--sunglow);
+        }
+
+        .excel-cell.result {
+            background: #e8f5e9;
+            border-color: var(--success-green);
+        }
+
+        .instructions {
+            background: #fff9e6;
+            border-left: 5px solid var(--sunglow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .check-figures-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0047cc 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,51,160,0.3);
+            margin-top: 2rem;
+            color: var(--white);
+        }
+
+        .check-figures-section h3 {
+            color: var(--sunglow);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .check-figures-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .check-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 203, 31, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: var(--sunglow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.2);
+        }
+
+        .check-item label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--sunglow);
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .check-item input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .check-item input:focus {
+            outline: none;
+            border-color: var(--sunglow);
+            background: var(--white);
+        }
+
+        .check-item .feedback {
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .check-item .feedback.correct {
+            background: var(--success-green);
+            color: var(--white);
+            display: block;
+        }
+
+        .check-item .feedback.incorrect {
+            background: var(--error-red);
+            color: var(--white);
+            display: block;
+        }
+
+        .verify-all-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto 0;
+            padding: 1.2rem 2rem;
+            background: var(--sunglow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Raleway', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.3);
+        }
+
+        .verify-all-btn:hover {
+            background: #ffd84d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 203, 31, 0.4);
+        }
+
+        .verify-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .overall-score {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        .overall-score.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .tutorial-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--sunglow);
+            margin-left: 5px;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .formula-box {
+            background: #f0f7ff;
+            border: 2px solid var(--primary-blue);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .formula-box .formula-label {
+            color: var(--primary-blue);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Phase 7: Variance Analysis & Performance Measurement</h1>
+            <p>Apex Manufacturing Solutions | Chapter 20</p>
+        </div>
+    </div>
+    <div class="accent-bar"></div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Phase 5!</h2>
+            <p>How many units must Apex sell to break even? What profit will we earn at different sales levels? How do price changes affect profitability? Cost-Volume-Profit (CVP) analysis answers these critical questions! You'll calculate break-even points, analyze contribution margins, use Excel's Goal Seek and Scenario Manager for strategic decisions, and create dynamic CVP charts that visualize the relationship between costs, volume, and profits.</p>
+        </div>
+
+        <div class="instructions">
+            <h4>📋 Phase 5 Requirements:</h4>
+            <ul>
+                <li><strong>CVP Analysis:</strong> Calculate contribution margin, CM ratio, break-even point in units and dollars, target profit levels, margin of safety</li>
+                <li><strong>Excel Decision Tools:</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Goal Seek: Find sales needed for target profit</li>
+                        <li>Scenario Manager: Best case, Worst case, Most likely scenarios</li>
+                        <li>Data Tables: Sensitivity analysis for price and volume changes</li>
+                        <li>Dynamic CVP Charts: Visual break-even analysis</li>
+                    </ul>
+                </li>
+                <li><strong>Strategic Decisions:</strong> Make-or-buy, special order pricing, sales mix optimization, operating leverage analysis</li>
+                <li><strong>Management Report:</strong> Recommend pricing strategies, evaluate risk with operating leverage, propose sales targets</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-nav">
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">📊 CVP Fundamentals</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">⚖️ Break-Even Analysis</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">🎯 Goal Seek</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">📋 Scenario Manager</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">📈 CVP Charts</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">⚡ Operating Leverage</a>
+        </div>
+
+        <!-- TUTORIAL 1: CVP FUNDAMENTALS -->
+        <div id="tutorial1" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial1')">📊 Tutorial 1: CVP Fundamentals & Contribution Margin</h2>
+            <div class="tutorial-content">
+            <p>Cost-Volume-Profit (CVP) analysis examines how changes in costs, volume, and price affect profit. It's essential for planning, pricing, and decision-making.</p>
+
+            <h3>The CVP Equation</h3>
+            <div class="formula-box">
+                <div class="formula-label">Profit Formula:</div>
+                Profit = (Sales Revenue) - (Total Variable Costs) - (Total Fixed Costs)
+                <div style="margin-top: 0.5rem;">Or:</div>
+                Profit = (Unit CM × Units Sold) - Fixed Costs
+            </div>
+
+            <h3>Key CVP Terms</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Formula</th>
+                        <th>Meaning</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Contribution Margin (CM)</strong></td>
+                        <td>Sales - Variable Costs</td>
+                        <td>Amount available to cover fixed costs and profit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Unit CM</strong></td>
+                        <td>Selling Price - Variable Cost per Unit</td>
+                        <td>CM generated by each unit sold</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CM Ratio</strong></td>
+                        <td>CM ÷ Sales (or Unit CM ÷ Price)</td>
+                        <td>% of each sales dollar that is CM</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Variable Cost Ratio</strong></td>
+                        <td>Variable Costs ÷ Sales</td>
+                        <td>% of each sales dollar consumed by variable costs</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Understanding Contribution Margin</h3>
+            <p>Contribution margin is the "contribution" each sale makes toward covering fixed costs and generating profit:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Before break-even:</strong> CM covers fixed costs</li>
+                <li><strong>After break-even:</strong> CM becomes profit</li>
+                <li><strong>Higher CM =</strong> Fewer units needed to break even</li>
+                <li><strong>CM Ratio =</strong> How efficiently sales turn into profit</li>
+            </ul>
+
+            <div class="visual-example">
+                <p><strong>Example: Apex Standard Widget</strong></p>
+                <p>Selling Price: $95 per unit</p>
+                <p>Variable Cost: $57 per unit</p>
+                <p style="margin-top: 0.5rem;"><span class="excel-cell formula">Unit CM = $95 - $57 = $38</span></p>
+                <p><span class="excel-cell formula">CM Ratio = $38 / $95 = 40%</span></p>
+                <p style="margin-top: 0.5rem;"><strong>Interpretation:</strong> Each unit sold contributes $38 toward fixed costs/profit. Or: 40% of each sales dollar is CM.</p>
+            </div>
+
+            <h3>Contribution Margin Income Statement</h3>
+            <p>CVP analysis uses a special income statement format that separates variable and fixed costs:</p>
+
+            <div class="visual-example">
+                <table class="example-table" style="font-size: 0.9rem;">
+                    <tbody>
+                        <tr>
+                            <td><strong>Sales Revenue</strong></td>
+                            <td style="text-align: right;">$475,000</td>
+                            <td style="text-align: right;">100%</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Variable Costs</td>
+                            <td style="text-align: right;">285,000</td>
+                            <td style="text-align: right;">60%</td>
+                        </tr>
+                        <tr style="background: #fff9e6; font-weight: bold;">
+                            <td><strong>Contribution Margin</strong></td>
+                            <td style="text-align: right;">$190,000</td>
+                            <td style="text-align: right;">40%</td>
+                        </tr>
+                        <tr>
+                            <td>Less: Fixed Costs</td>
+                            <td style="text-align: right;">120,000</td>
+                            <td></td>
+                        </tr>
+                        <tr style="background: #e8f5e9; font-weight: bold;">
+                            <td><strong>Net Operating Income</strong></td>
+                            <td style="text-align: right;">$70,000</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 WHY CM FORMAT?</strong> The contribution margin format is more useful for decision-making than traditional format because it clearly shows how much each sale contributes to profit. It separates costs by behavior (variable vs. fixed), not by function (product vs. period).
+            </div>
+
+            <h3>Cost Behavior Patterns</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Cost Type</th>
+                        <th>Total Cost Behavior</th>
+                        <th>Per Unit Behavior</th>
+                        <th>Examples</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Variable</strong></td>
+                        <td>Changes with volume</td>
+                        <td>Constant per unit</td>
+                        <td>Direct materials, sales commissions, packaging</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fixed</strong></td>
+                        <td>Constant total</td>
+                        <td>Decreases per unit as volume increases</td>
+                        <td>Rent, salaries, insurance, depreciation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mixed</strong></td>
+                        <td>Both variable and fixed components</td>
+                        <td>Varies</td>
+                        <td>Utilities (base charge + usage), maintenance</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ RELEVANT RANGE:</strong> CVP assumptions hold only within the relevant range - the normal operating range of volume. Outside this range, cost behavior may change (e.g., need to add factory capacity, get volume discounts on materials).
+            </div>
+
+            <h3>CVP Assumptions</h3>
+            <p>CVP analysis assumes:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Selling price is constant (no volume discounts)</li>
+                <li>Costs can be classified as purely variable or fixed</li>
+                <li>Variable cost per unit is constant</li>
+                <li>Fixed costs remain constant within relevant range</li>
+                <li>All units produced are sold (no inventory changes)</li>
+                <li>For multi-product: sales mix remains constant</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 2: BREAK-EVEN ANALYSIS -->
+        <div id="tutorial2" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial2')">⚖️ Tutorial 2: Break-Even Analysis</h2>
+            <div class="tutorial-content">
+            <p>Break-even point is where total revenue equals total costs - no profit, no loss. It's the minimum sales needed to avoid losses.</p>
+
+            <h3>Break-Even Formulas</h3>
+            
+            <div class="formula-box">
+                <div class="formula-label">Break-Even in UNITS:</div>
+                Break-Even Units = Fixed Costs ÷ Unit CM
+                <div style="margin-top: 1rem; font-family: 'Raleway', sans-serif; font-size: 0.9rem;">
+                Why? Each unit contributes Unit CM toward fixed costs. Divide total fixed costs by contribution per unit to find units needed.
+                </div>
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-label">Break-Even in DOLLARS:</div>
+                Break-Even Sales $ = Fixed Costs ÷ CM Ratio
+                <div style="margin-top: 1rem; font-family: 'Raleway', sans-serif; font-size: 0.9rem;">
+                Why? CM Ratio tells what % of sales is CM. Divide fixed costs by this ratio to find sales dollars needed.
+                </div>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example Calculation:</strong></p>
+                <p>Unit CM: $38</p>
+                <p>CM Ratio: 40%</p>
+                <p>Fixed Costs: $120,000</p>
+                <p style="margin-top: 1rem;"><strong>Break-Even Units:</strong></p>
+                <p><span class="excel-cell formula">$120,000 ÷ $38 = 3,158 units</span></p>
+                <p style="margin-top: 1rem;"><strong>Break-Even Sales $:</strong></p>
+                <p><span class="excel-cell formula">$120,000 ÷ 0.40 = $300,000</span></p>
+                <p style="margin-top: 1rem;"><strong>Proof:</strong> 3,158 units × $95 price = $299,990 (≈ $300,000) ✓</p>
+            </div>
+
+            <h3>Target Profit Analysis</h3>
+            <p>What if you want to earn a specific profit, not just break even?</p>
+
+            <div class="formula-box">
+                <div class="formula-label">Units for Target Profit:</div>
+                Required Units = (Fixed Costs + Target Profit) ÷ Unit CM
+            </div>
+
+            <div class="formula-box">
+                <div class="formula-label">Sales $ for Target Profit:</div>
+                Required Sales = (Fixed Costs + Target Profit) ÷ CM Ratio
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Earn $50,000 Profit</strong></p>
+                <p><strong>Units needed:</strong></p>
+                <p><span class="excel-cell formula">($120,000 + $50,000) ÷ $38 = 4,474 units</span></p>
+                <p style="margin-top: 1rem;"><strong>Sales needed:</strong></p>
+                <p><span class="excel-cell formula">($120,000 + $50,000) ÷ 0.40 = $425,000</span></p>
+                <p style="margin-top: 1rem;"><strong>Proof:</strong> 4,474 units × $38 CM = $170,012 CM</p>
+                <p>$170,012 CM - $120,000 FC = $50,012 profit ✓</p>
+            </div>
+
+            <h3>Margin of Safety</h3>
+            <p>How far above break-even are current sales? Margin of safety measures the cushion:</p>
+
+            <div class="formula-box">
+                <div class="formula-label">Margin of Safety:</div>
+                MOS $ = Actual Sales - Break-Even Sales
+                <div style="margin-top: 0.5rem;">Or as percentage:</div>
+                MOS % = (Actual Sales - BE Sales) ÷ Actual Sales
+            </div>
+
+            <p style="margin-top: 1rem;">Higher MOS = Lower risk. Sales can drop by MOS amount before incurring losses.</p>
+
+            <div class="visual-example">
+                <p><strong>Example:</strong></p>
+                <p>Actual Sales: $475,000</p>
+                <p>Break-Even Sales: $300,000</p>
+                <p style="margin-top: 1rem;"><span class="excel-cell result">MOS $ = $475,000 - $300,000 = $175,000</span></p>
+                <p><span class="excel-cell result">MOS % = $175,000 ÷ $475,000 = 36.8%</span></p>
+                <p style="margin-top: 1rem;"><strong>Interpretation:</strong> Sales can drop by $175,000 (or 36.8%) before hitting break-even.</p>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 SAFETY BUFFER:</strong> High-margin-of-safety businesses are safer investments. They can withstand sales downturns. Low MOS = risky - small sales drop causes losses. Use MOS to evaluate business risk!
+            </div>
+
+            <h3>After-Tax Target Profit</h3>
+            <p>If you want a specific after-tax profit, first convert to before-tax profit:</p>
+
+            <div class="formula-box">
+                <div class="formula-label">Before-Tax Profit Needed:</div>
+                Before-Tax Profit = After-Tax Profit ÷ (1 - Tax Rate)
+                <div style="margin-top: 0.5rem;">Then use in target profit formula:</div>
+                Units = (FC + Before-Tax Profit) ÷ Unit CM
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Want $40,000 After Tax (Tax Rate 25%)</strong></p>
+                <p><strong>Step 1:</strong> Before-tax profit needed:</p>
+                <p><span class="excel-cell formula">$40,000 ÷ (1 - 0.25) = $40,000 ÷ 0.75 = $53,333</span></p>
+                <p style="margin-top: 1rem;"><strong>Step 2:</strong> Units needed:</p>
+                <p><span class="excel-cell formula">($120,000 + $53,333) ÷ $38 = 4,561 units</span></p>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ FIXED VS. VARIABLE:</strong> CVP formulas only work if you correctly classify costs as fixed or variable. Mixed costs must be separated into their fixed and variable components using high-low method, scattergraph, or regression analysis.
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 3: GOAL SEEK -->
+        <div id="tutorial3" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial3')">🎯 Tutorial 3: Using Goal Seek for CVP Decisions</h2>
+            <div class="tutorial-content">
+            <p>Goal Seek is Excel's tool for working backward from a desired result to find the input needed. Perfect for CVP "what-if" questions!</p>
+
+            <h3>What is Goal Seek?</h3>
+            <p>Goal Seek answers questions like:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>"What price do I need to earn $75,000 profit?"</li>
+                <li>"How many units must I sell to break even?"</li>
+                <li>"What's the maximum variable cost I can have and still be profitable?"</li>
+                <li>"If fixed costs increase $20,000, what sales are needed to maintain profit?"</li>
+            </ul>
+
+            <h3>Setting Up for Goal Seek</h3>
+            <p>Your Excel model needs:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Input cells:</strong> Variables you can change (price, units, costs)</li>
+                    <li><strong>Formula cells:</strong> Calculated results (profit, sales revenue, CM)</li>
+                    <li><strong>Clear relationships:</strong> Formula cells reference input cells</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example Model Setup:</strong></p>
+                <p>B2: Units Sold = 5,000</p>
+                <p>B3: Selling Price = $95</p>
+                <p>B4: Variable Cost/Unit = $57</p>
+                <p>B5: Fixed Costs = $120,000</p>
+                <p style="margin-top: 1rem;">B7: Sales Revenue = <span class="excel-cell formula">B2 * B3</span></p>
+                <p>B8: Total Variable Costs = <span class="excel-cell formula">B2 * B4</span></p>
+                <p>B9: Contribution Margin = <span class="excel-cell formula">B7 - B8</span></p>
+                <p>B10: Net Profit = <span class="excel-cell formula">B9 - B5</span></p>
+            </div>
+
+            <h3>Step-by-Step: Using Goal Seek</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Data tab</strong> → What-If Analysis → Goal Seek</li>
+                    <li><strong>Set cell:</strong> Select the formula cell with your goal (e.g., B10 for profit)</li>
+                    <li><strong>To value:</strong> Enter target value (e.g., 75000 for $75,000 profit)</li>
+                    <li><strong>By changing cell:</strong> Select input cell to adjust (e.g., B2 for units)</li>
+                    <li><strong>Click OK</strong></li>
+                    <li>Goal Seek iterates to find the solution</li>
+                    <li><strong>Click OK</strong> to accept or Cancel to revert</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example: Find Units Needed for $75,000 Profit</strong></p>
+                <p><strong>Goal Seek Settings:</strong></p>
+                <p>Set cell: B10 (Net Profit)</p>
+                <p>To value: 75000</p>
+                <p>By changing cell: B2 (Units Sold)</p>
+                <p style="margin-top: 1rem;"><strong>Result:</strong> Goal Seek finds B2 should be 5,132 units</p>
+                <p><strong>Verification:</strong> 5,132 × $38 CM = $195,016 CM - $120,000 FC = $75,016 ✓</p>
+            </div>
+
+            <h3>Common CVP Goal Seek Scenarios</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Set Cell</th>
+                        <th>To Value</th>
+                        <th>By Changing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Units for break-even</td>
+                        <td>Profit</td>
+                        <td>0</td>
+                        <td>Units</td>
+                    </tr>
+                    <tr>
+                        <td>Price for target profit</td>
+                        <td>Profit</td>
+                        <td>Target amount</td>
+                        <td>Selling price</td>
+                    </tr>
+                    <tr>
+                        <td>Max variable cost allowed</td>
+                        <td>Profit</td>
+                        <td>Target amount</td>
+                        <td>Variable cost/unit</td>
+                    </tr>
+                    <tr>
+                        <td>Sales $ for target CM ratio</td>
+                        <td>CM Ratio</td>
+                        <td>Target %</td>
+                        <td>Sales revenue</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 ITERATIVE POWER:</strong> Goal Seek is perfect when algebra gets complex. Instead of solving equations manually, let Excel iterate to the answer. It can handle formulas too complicated to solve by hand!
+            </div>
+
+            <h3>Goal Seek Limitations</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Changes only ONE input variable at a time</li>
+                <li>Finds one solution (may be multiple solutions)</li>
+                <li>Might not find a solution if none exists</li>
+                <li>Doesn't save scenarios - use Scenario Manager for that</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ CIRCULAR LOGIC:</strong> Make sure your changing cell and set cell are properly connected through formulas. If they're not related, Goal Seek can't work. Also, Goal Seek changes only one cell - for multi-variable problems, use Solver (advanced tool).
+            </div>
+
+            <h3>Documenting Goal Seek Results</h3>
+            <p>Goal Seek doesn't create reports. To save results:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Write down the solution values before clicking OK</li>
+                <li>Take a screenshot of the result</li>
+                <li>Copy the values to a separate documentation area</li>
+                <li>Or use Scenario Manager to save multiple Goal Seek results</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 4: SCENARIO MANAGER -->
+        <div id="tutorial4" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial4')">📋 Tutorial 4: Scenario Manager for Multiple What-If Cases</h2>
+            <div class="tutorial-content">
+            <p>Scenario Manager lets you save and compare multiple "what-if" scenarios. Perfect for CVP analysis when you want to compare optimistic, pessimistic, and realistic forecasts.</p>
+
+            <h3>What is Scenario Manager?</h3>
+            <p>Scenario Manager saves sets of input values and lets you:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>Define multiple scenarios (Best Case, Worst Case, Most Likely)</li>
+                <li>Instantly switch between scenarios</li>
+                <li>Compare results side-by-side in a summary report</li>
+                <li>Change multiple inputs simultaneously (unlike Goal Seek)</li>
+                <li>Present alternatives to management</li>
+            </ul>
+
+            <h3>Setting Up Scenarios</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Data tab</strong> → What-If Analysis → Scenario Manager</li>
+                    <li><strong>Click "Add"</strong> to create first scenario</li>
+                    <li><strong>Scenario name:</strong> Enter descriptive name (e.g., "Best Case")</li>
+                    <li><strong>Changing cells:</strong> Select input cells that vary (e.g., B2:B4)</li>
+                    <li><strong>Comment:</strong> Optional notes about the scenario</li>
+                    <li><strong>Click OK</strong></li>
+                    <li><strong>Enter values</strong> for each changing cell</li>
+                    <li><strong>Click OK</strong> to save scenario</li>
+                    <li><strong>Repeat</strong> for additional scenarios</li>
+                </ol>
+            </div>
+
+            <h3>Example: Three CVP Scenarios for Apex</h3>
+            <div class="visual-example">
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Scenario</th>
+                            <th>Units Sold</th>
+                            <th>Selling Price</th>
+                            <th>Variable Cost</th>
+                            <th>Fixed Costs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Best Case</strong></td>
+                            <td>6,000</td>
+                            <td>$100</td>
+                            <td>$54</td>
+                            <td>$115,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Most Likely</strong></td>
+                            <td>5,000</td>
+                            <td>$95</td>
+                            <td>$57</td>
+                            <td>$120,000</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Worst Case</strong></td>
+                            <td>3,800</td>
+                            <td>$90</td>
+                            <td>$60</td>
+                            <td>$125,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 1rem; font-size: 0.9rem;"><strong>Best Case:</strong> Higher volume, premium price, cost savings, efficiency gains</p>
+                <p style="font-size: 0.9rem;"><strong>Worst Case:</strong> Lower volume, price pressure, cost increases, inefficiencies</p>
+            </div>
+
+            <h3>Viewing Scenarios</h3>
+            <p>To switch between scenarios:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Data → Scenario Manager</strong></li>
+                    <li><strong>Select scenario</strong> from the list</li>
+                    <li><strong>Click "Show"</strong></li>
+                    <li>Excel updates all changing cells and recalculates</li>
+                    <li>View the results in your formulas</li>
+                </ol>
+            </div>
+
+            <h3>Creating a Scenario Summary Report</h3>
+            <p>This is the most powerful feature - compare all scenarios side-by-side:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Scenario Manager</strong> → Click "Summary"</li>
+                    <li><strong>Report type:</strong> Choose "Scenario Summary" (not pivot table)</li>
+                    <li><strong>Result cells:</strong> Select cells to include in report (e.g., B10 for profit, B9 for CM)</li>
+                    <li><strong>Click OK</strong></li>
+                    <li>Excel creates new sheet with formatted summary</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Scenario Summary Report Structure:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Current Values</th>
+                            <th>Best Case</th>
+                            <th>Most Likely</th>
+                            <th>Worst Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Changing Cells:</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Units Sold</td>
+                            <td>5,000</td>
+                            <td>6,000</td>
+                            <td>5,000</td>
+                            <td>3,800</td>
+                        </tr>
+                        <tr>
+                            <td>Selling Price</td>
+                            <td>$95</td>
+                            <td>$100</td>
+                            <td>$95</td>
+                            <td>$90</td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td><strong>Result Cells:</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Profit</td>
+                            <td>$70,000</td>
+                            <td>$161,000</td>
+                            <td>$70,000</td>
+                            <td>-$11,000</td>
+                        </tr>
+                        <tr>
+                            <td>CM Ratio</td>
+                            <td>40.0%</td>
+                            <td>46.0%</td>
+                            <td>40.0%</td>
+                            <td>33.3%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 RISK ANALYSIS:</strong> Use scenarios to quantify risk! If Best Case profit is $161K and Worst Case is -$11K, management sees the full range of possibilities. This is much better than showing only one projection.
+            </div>
+
+            <h3>Scenario Manager Best Practices</h3>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Limit scenarios:</strong> 3-5 scenarios are ideal (too many confuses)</li>
+                <li><strong>Name clearly:</strong> "Best/Most Likely/Worst" or "Optimistic/Realistic/Pessimistic"</li>
+                <li><strong>Document assumptions:</strong> Use Comments field to note why values were chosen</li>
+                <li><strong>Protect scenarios:</strong> Scenario Manager → Edit → Protection to prevent accidental changes</li>
+                <li><strong>Include key metrics:</strong> In result cells, include profit, CM ratio, break-even, margin of safety</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ SCENARIOS VS. DATA TABLES:</strong> Use scenarios when you want to save and compare specific combinations of inputs (Best/Worst/Likely). Use data tables when you want to see how ONE or TWO variables affect results across a continuous range of values.
+            </div>
+
+            <h3>Editing and Deleting Scenarios</h3>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Edit:</strong> Scenario Manager → Select scenario → Edit → Change values</li>
+                <li><strong>Delete:</strong> Scenario Manager → Select scenario → Delete</li>
+                <li><strong>Merge:</strong> Import scenarios from other workbooks (Merge button)</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 5: CVP CHARTS -->
+        <div id="tutorial5" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial5')">📈 Tutorial 5: Creating Dynamic CVP Charts</h2>
+            <div class="tutorial-content">
+            <p>CVP charts visualize the break-even point and profit zones. They show at a glance where costs exceed revenue (loss zone) versus where revenue exceeds costs (profit zone).</p>
+
+            <h3>Types of CVP Charts</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Chart Type</th>
+                        <th>What It Shows</th>
+                        <th>When to Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Break-Even Chart</strong></td>
+                        <td>Revenue and total cost lines intersecting at break-even</td>
+                        <td>Classic CVP visualization</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Profit-Volume (PV) Chart</strong></td>
+                        <td>Profit/loss at different volumes (single line)</td>
+                        <td>Emphasize profit levels</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contribution Margin Chart</strong></td>
+                        <td>CM line showing coverage of fixed costs</td>
+                        <td>Educational purposes</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Creating a Break-Even Chart</h3>
+            <p><strong>Step 1: Build Data Table</strong></p>
+            <div class="step-list">
+                <ol>
+                    <li>Create column for Units (0 to max expected, e.g., 0, 1000, 2000... 7000)</li>
+                    <li>Create formula for Sales Revenue = Units × Price</li>
+                    <li>Create formula for Total Variable Costs = Units × Variable Cost/Unit</li>
+                    <li>Create formula for Total Costs = Variable Costs + Fixed Costs</li>
+                    <li>Create formula for Profit = Sales Revenue - Total Costs</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example Data Table Setup:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Units</th>
+                            <th>Sales Revenue</th>
+                            <th>Total Costs</th>
+                            <th>Profit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>0</td>
+                            <td>$0</td>
+                            <td>$120,000</td>
+                            <td>-$120,000</td>
+                        </tr>
+                        <tr>
+                            <td>2,000</td>
+                            <td>$190,000</td>
+                            <td>$234,000</td>
+                            <td>-$44,000</td>
+                        </tr>
+                        <tr style="background: #fff9e6;">
+                            <td>3,158</td>
+                            <td>$300,000</td>
+                            <td>$300,000</td>
+                            <td>$0</td>
+                        </tr>
+                        <tr>
+                            <td>5,000</td>
+                            <td>$475,000</td>
+                            <td>$405,000</td>
+                            <td>$70,000</td>
+                        </tr>
+                        <tr>
+                            <td>7,000</td>
+                            <td>$665,000</td>
+                            <td>$519,000</td>
+                            <td>$146,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p style="margin-top: 1.5rem;"><strong>Step 2: Create Line Chart</strong></p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select data range:</strong> Units, Sales Revenue, Total Costs columns</li>
+                    <li><strong>Insert tab</strong> → Line Chart → Line with Markers</li>
+                    <li><strong>Chart appears</strong> with two lines</li>
+                    <li><strong>Where lines cross</strong> = Break-even point!</li>
+                </ol>
+            </div>
+
+            <h3>Formatting the Break-Even Chart</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Add Chart Title:</strong> "Break-Even Analysis - Standard Widget"</li>
+                    <li><strong>Format Revenue Line:</strong> Make it green (profit color)</li>
+                    <li><strong>Format Cost Line:</strong> Make it red (cost color)</li>
+                    <li><strong>Add Axis Titles:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Horizontal: "Units Sold"</li>
+                            <li>Vertical: "Dollars"</li>
+                        </ul>
+                    </li>
+                    <li><strong>Add Data Labels</strong> at break-even point (optional)</li>
+                    <li><strong>Add Gridlines</strong> for easier reading</li>
+                    <li><strong>Legend:</strong> Position at top or right</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 HIGHLIGHT BREAK-EVEN:</strong> Add a vertical line or annotation at the break-even point (3,158 units). This makes it immediately clear where profitability begins. In Excel: Insert → Shapes → Line, position at break-even.
+            </div>
+
+            <h3>Creating a Profit-Volume Chart</h3>
+            <p>Shows profit/loss directly (simpler than break-even chart):</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select Units and Profit columns</strong> from your data</li>
+                    <li><strong>Insert Line Chart</strong></li>
+                    <li><strong>Single line</strong> shows profit at each volume</li>
+                    <li><strong>Line crosses $0</strong> at break-even point</li>
+                    <li><strong>Below $0 = loss zone</strong> (shade red)</li>
+                    <li><strong>Above $0 = profit zone</strong> (shade green)</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>PV Chart Characteristics:</strong></p>
+                <p>✓ Straight line (constant CM per unit)</p>
+                <p>✓ Slope = Contribution margin per unit</p>
+                <p>✓ Y-intercept = -Fixed Costs</p>
+                <p>✓ Steeper slope = higher CM = faster breakeven</p>
+            </div>
+
+            <h3>Making Charts Dynamic</h3>
+            <p>Link chart data to input cells so it updates automatically:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Use cell references</strong> in formulas (not hard-coded values)</li>
+                    <li><strong>Example:</strong> Sales Revenue = Units × $B$3 (where B3 = price input)</li>
+                    <li><strong>When you change price in B3</strong> → Chart updates instantly!</li>
+                    <li><strong>Add scroll bars</strong> or spinners to change inputs interactively</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ CHART LIMITATIONS:</strong> CVP charts assume linear relationships (constant price, constant variable cost per unit). In reality, you might get volume discounts (price decreases) or economies of scale (variable cost decreases). The chart won't show these non-linear behaviors.
+            </div>
+
+            <h3>Presenting CVP Charts</h3>
+            <p>Make your charts presentation-ready:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Clear title:</strong> Include product name and date</li>
+                <li><strong>Label axes:</strong> Always show what's being measured</li>
+                <li><strong>Add annotations:</strong> Text boxes noting break-even point, profit zones</li>
+                <li><strong>Use company colors:</strong> Apex blue and yellow for branding</li>
+                <li><strong>Remove clutter:</strong> Simplify gridlines, remove unnecessary elements</li>
+                <li><strong>Size appropriately:</strong> Large enough to read in presentation</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 6: OPERATING LEVERAGE -->
+        <div id="tutorial6" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial6')">⚡ Tutorial 6: Operating Leverage & Risk Analysis</h2>
+            <div class="tutorial-content">
+            <p>Operating leverage measures how sensitive profit is to changes in sales. High operating leverage means small sales changes cause large profit swings - both good and bad!</p>
+
+            <h3>What is Operating Leverage?</h3>
+            <p>Operating leverage comes from fixed costs. The more fixed costs relative to variable costs, the higher the leverage:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>High fixed, low variable:</strong> High operating leverage (e.g., airlines, utilities)</li>
+                <li><strong>Low fixed, high variable:</strong> Low operating leverage (e.g., consulting, retail)</li>
+            </ul>
+
+            <h3>Degree of Operating Leverage (DOL)</h3>
+            <div class="formula-box">
+                <div class="formula-label">DOL Formula:</div>
+                DOL = Contribution Margin ÷ Net Operating Income
+                <div style="margin-top: 1rem; font-family: 'Raleway', sans-serif; font-size: 0.9rem;">
+                Interpretation: If sales increase by 10%, profit increases by (10% × DOL)
+                </div>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Example Calculation:</strong></p>
+                <p>Contribution Margin: $190,000</p>
+                <p>Net Operating Income: $70,000</p>
+                <p style="margin-top: 1rem;"><span class="excel-cell formula">DOL = $190,000 ÷ $70,000 = 2.71</span></p>
+                <p style="margin-top: 1rem;"><strong>Interpretation:</strong> If sales increase 10%, profit increases 27.1% (10% × 2.71)</p>
+            </div>
+
+            <h3>How DOL Works - The Multiplier Effect</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Sales Change</th>
+                        <th>Profit Change (DOL = 2.71)</th>
+                        <th>New Profit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #e8f5e9;">
+                        <td>+10% increase</td>
+                        <td>+27.1% increase</td>
+                        <td>$70,000 × 1.271 = $88,970</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td>+20% increase</td>
+                        <td>+54.2% increase</td>
+                        <td>$70,000 × 1.542 = $107,940</td>
+                    </tr>
+                    <tr style="background: #ffebee;">
+                        <td>-10% decrease</td>
+                        <td>-27.1% decrease</td>
+                        <td>$70,000 × 0.729 = $51,030</td>
+                    </tr>
+                    <tr style="background: #ffebee;">
+                        <td>-20% decrease</td>
+                        <td>-54.2% decrease</td>
+                        <td>$70,000 × 0.458 = $32,060</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 THE DOUBLE-EDGED SWORD:</strong> High DOL magnifies BOTH gains and losses. Good when sales growing (profit skyrockets). Dangerous when sales declining (profit plummets). Low DOL = more stable but less upside.
+            </div>
+
+            <h3>Operating Leverage and Risk</h3>
+            <p>DOL reveals business risk:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>DOL Level</th>
+                        <th>Risk Profile</th>
+                        <th>Characteristics</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>DOL > 3</strong></td>
+                        <td>High Risk</td>
+                        <td>Profits very sensitive to sales, high fixed costs, near break-even</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DOL 1.5-3</strong></td>
+                        <td>Moderate Risk</td>
+                        <td>Balanced cost structure, reasonable profit cushion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DOL < 1.5</strong></td>
+                        <td>Low Risk</td>
+                        <td>Mostly variable costs, stable profits, well above break-even</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>DOL Changes with Sales Level</h3>
+            <p>Important: DOL is NOT constant! It changes as you move away from current sales:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Near break-even:</strong> DOL is very high (small profit base)</li>
+                <li><strong>Far above break-even:</strong> DOL decreases (large profit cushion)</li>
+                <li><strong>At break-even:</strong> DOL is undefined (division by zero)</li>
+            </ul>
+
+            <div class="visual-example">
+                <p><strong>DOL at Different Sales Levels:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Units</th>
+                            <th>CM</th>
+                            <th>Profit</th>
+                            <th>DOL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>3,500</td>
+                            <td>$133,000</td>
+                            <td>$13,000</td>
+                            <td>10.23</td>
+                        </tr>
+                        <tr>
+                            <td>5,000</td>
+                            <td>$190,000</td>
+                            <td>$70,000</td>
+                            <td>2.71</td>
+                        </tr>
+                        <tr>
+                            <td>7,000</td>
+                            <td>$266,000</td>
+                            <td>$146,000</td>
+                            <td>1.82</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Notice: As volume increases (farther from break-even), DOL decreases</p>
+            </div>
+
+            <h3>Strategic Implications</h3>
+            <p>Understanding operating leverage guides strategic decisions:</p>
+
+            <h4>When to Increase Operating Leverage (More Fixed, Less Variable):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Confident about strong, growing sales</li>
+                <li>Want to maximize profit in good times</li>
+                <li>Automate production (high fixed equipment, lower labor)</li>
+                <li>Example: Replace hourly workers with automated machines</li>
+            </ul>
+
+            <h4>When to Decrease Operating Leverage (Less Fixed, More Variable):</h4>
+            <ul style="margin-left: 2rem;">
+                <li>Uncertain economic conditions</li>
+                <li>Want stability over maximum profit</li>
+                <li>Use temporary/contract labor instead of salaried employees</li>
+                <li>Outsource instead of owning equipment</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ LEVERAGE TRAP:</strong> Companies with high operating leverage face huge pressure in downturns. They can't easily reduce fixed costs (rent, salaries) but revenues drop. This is why airlines and hotels struggle in recessions - high DOL combined with falling demand!
+            </div>
+
+            <h3>Financial Leverage vs. Operating Leverage</h3>
+            <p>Don't confuse these:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Source</th>
+                        <th>Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Operating Leverage</strong></td>
+                        <td>Fixed operating costs</td>
+                        <td>Magnifies effect of sales on operating profit</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Leverage</strong></td>
+                        <td>Fixed financing costs (debt interest)</td>
+                        <td>Magnifies effect of operating profit on net income</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 1rem;">Combined leverage (both together) creates even more volatility!</p>
+
+            <h3>Calculating DOL in Excel</h3>
+            <div class="code-example">
+<span class="comment">// Excel formula structure</span>
+Cell B15: Contribution Margin = <span class="function">=B12-B13</span>
+Cell B16: Fixed Costs = <span class="function">120000</span>
+Cell B17: Profit = <span class="function">=B15-B16</span>
+
+Cell B19: DOL = <span class="function">=B15/B17</span>
+
+<span class="comment">// For % impact:</span>
+Cell B20: Sales Change % = <span class="function">0.10</span> (10%)
+Cell B21: Profit Change % = <span class="function">=B20*B19</span>
+<span class="comment">→ Shows 27.1% profit change</span>
+            </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h4>🎯 Ready to Complete Phase 5!</h4>
+            <p style="margin-top: 0.5rem;">You've mastered CVP analysis and decision tools! Apply these skills:</p>
+            <ul style="margin-top: 0.5rem;">
+                <li>Calculate contribution margin, CM ratio, and break-even point</li>
+                <li>Use Goal Seek to find sales needed for target profits</li>
+                <li>Create scenarios (Best/Worst/Likely) with Scenario Manager</li>
+                <li>Build sensitivity analysis with data tables</li>
+                <li>Create dynamic CVP charts showing break-even point</li>
+                <li>Calculate operating leverage and assess risk</li>
+                <li>Make strategic pricing and volume recommendations</li>
+            </ul>
+        </div>
+
+        <div class="check-figures-section">
+            <h3>✓ Interactive Check Figures - CVP Analysis</h3>
+            <p>Enter your calculated values below to verify your CVP calculations. The system will provide immediate feedback!</p>
+
+            <div class="check-grid">
+                <div class="check-item">
+                    <label for="unitCM">
+                        Unit Contribution Margin
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Selling Price - Variable Cost per Unit</span>
+                        </span>
+                    </label>
+                    <input type="text" id="unitCM" placeholder="Enter amount (e.g., 40.00)" oninput="checkValue(this, 38.00, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="cmRatio">
+                        CM Ratio (as %)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">CM ÷ Sales Revenue × 100</span>
+                        </span>
+                    </label>
+                    <input type="text" id="cmRatio" placeholder="Enter % (e.g., 42.5)" oninput="checkValue(this, 40.0, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="breakEvenUnits">
+                        Break-Even Point (Units)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Fixed Costs ÷ Unit CM</span>
+                        </span>
+                    </label>
+                    <input type="text" id="breakEvenUnits" placeholder="Enter units (e.g., 3,200)" oninput="checkValue(this, 3158, 5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="breakEvenSales">
+                        Break-Even Point (Sales $)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Fixed Costs ÷ CM Ratio</span>
+                        </span>
+                    </label>
+                    <input type="text" id="breakEvenSales" placeholder="Enter amount (e.g., 305,000)" oninput="checkValue(this, 300000, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="targetUnits">
+                        Units for $50,000 Target Profit
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">(Fixed Costs + Target) ÷ Unit CM</span>
+                        </span>
+                    </label>
+                    <input type="text" id="targetUnits" placeholder="Enter units (e.g., 4,500)" oninput="checkValue(this, 4474, 5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="marginSafety">
+                        Margin of Safety ($ amount)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Actual Sales - Break-Even Sales</span>
+                        </span>
+                    </label>
+                    <input type="text" id="marginSafety" placeholder="Enter amount (e.g., 180,000)" oninput="checkValue(this, 175000, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="marginSafetyPct">
+                        Margin of Safety (%)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">MOS $ ÷ Actual Sales × 100</span>
+                        </span>
+                    </label>
+                    <input type="text" id="marginSafetyPct" placeholder="Enter % (e.g., 38.5)" oninput="checkValue(this, 36.8, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="dol">
+                        Degree of Operating Leverage
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Total CM ÷ Net Operating Income</span>
+                        </span>
+                    </label>
+                    <input type="text" id="dol" placeholder="Enter ratio (e.g., 2.80)" oninput="checkValue(this, 2.71, 0.05)">
+                    <div class="feedback"></div>
+                </div>
+            </div>
+
+            <button class="verify-all-btn" onclick="verifyAll()">🎯 Verify All Answers</button>
+            
+            <div class="overall-score" id="overallScore"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers
+        const correctAnswers = {
+            unitCM: 38.00,
+            cmRatio: 40.0,
+            breakEvenUnits: 3158,
+            breakEvenSales: 300000,
+            targetUnits: 4474,
+            marginSafety: 175000,
+            marginSafetyPct: 36.8,
+            dol: 2.71
+        };
+
+        // Store tolerance for each answer
+        const tolerances = {
+            unitCM: 0.5,
+            cmRatio: 0.5,
+            breakEvenUnits: 5,
+            breakEvenSales: 500,
+            targetUnits: 5,
+            marginSafety: 500,
+            marginSafetyPct: 0.5,
+            dol: 0.05
+        };
+
+        function checkValue(input, correctValue, tolerance = 0) {
+            const feedbackDiv = input.nextElementSibling;
+            const userValue = parseFloat(input.value.replace(/[$,%]/g, ''));
+            
+            if (isNaN(userValue)) {
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.style.display = 'none';
+                return false;
+            }
+
+            const difference = Math.abs(userValue - correctValue);
+            
+            if (difference <= tolerance) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✓ Correct!';
+                input.style.borderColor = 'var(--success-green)';
+                return true;
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                const percentOff = ((difference / correctValue) * 100).toFixed(1);
+                feedbackDiv.innerHTML = `✗ Not quite. You're ${percentOff}% off. Double-check your calculations.`;
+                input.style.borderColor = 'var(--error-red)';
+                return false;
+            }
+        }
+
+        function verifyAll() {
+            let correct = 0;
+            let total = 0;
+            
+            for (const [id, correctValue] of Object.entries(correctAnswers)) {
+                const input = document.getElementById(id);
+                const tolerance = tolerances[id] || 0;
+                total++;
+                
+                if (checkValue(input, correctValue, tolerance)) {
+                    correct++;
+                }
+            }
+            
+            const scoreDiv = document.getElementById('overallScore');
+            const percentage = ((correct / total) * 100).toFixed(0);
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage === '100') {
+                emoji = '🎉';
+                message = `Perfect! ${correct}/${total} correct!`;
+            } else if (percentage >= '75') {
+                emoji = '👍';
+                message = `Good work! ${correct}/${total} correct. Review the incorrect answers.`;
+            } else if (percentage >= '50') {
+                emoji = '📚';
+                message = `Keep trying! ${correct}/${total} correct. Review your calculations.`;
+            } else {
+                emoji = '💪';
+                message = `${correct}/${total} correct. Don't give up! Review the formulas and try again.`;
+            }
+            
+            scoreDiv.innerHTML = `${emoji} ${message}`;
+            scoreDiv.className = 'overall-score show';
+            
+            // Scroll to score
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Format inputs on blur
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = parseFloat(this.value.replace(/[$,%]/g, ''));
+                if (!isNaN(value)) {
+                    if (this.id.includes('Ratio') || this.id.includes('Pct')) {
+                        // Don't add commas to percentages
+                        this.value = value;
+                    } else if (this.id === 'dol' || this.id === 'unitCM') {
+                        // Don't add commas to ratios and unit values
+                        this.value = value;
+                    } else {
+                        this.value = value.toLocaleString('en-US');
+                    }
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.value = this.value.replace(/,/g, '');
+            });
+        });
+
+        // Collapsible tutorial functions
+        function toggleTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.toggle('collapsed');
+            }
+        }
+
+        function expandTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.remove('collapsed');
+                setTimeout(() => {
+                    tutorial.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Initialize - expand all tutorials by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // All tutorials start expanded (no collapsed class)
+        });
+    </script>
+</body>
+</html>
