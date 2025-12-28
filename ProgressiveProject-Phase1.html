@@ -516,11 +516,110 @@ display: grid;
         .tutorial-section h2:hover {
             color: #0047cc;
         }
+
+                /* Print Styles - Make everything downloadable as PDF */
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            body {
+                background: white !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 20px !important;
+            }
+
+            .header {
+                background: var(--primary-blue) !important;
+                color: var(--white) !important;
+                padding: 1rem !important;
+                page-break-after: avoid !important;
+            }
+
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* Show all content - expand collapsed sections */
+            .tutorial-section.collapsed .tutorial-content {
+                display: block !important;
+                max-height: none !important;
+            }
+
+            .tutorial-section h2:after {
+                content: '' !important;
+            }
+
+            /* Ensure tables print properly */
+            table {
+                page-break-inside: auto !important;
+                border-collapse: collapse !important;
+                width: 100% !important;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto !important;
+            }
+
+            thead {
+                display: table-header-group !important;
+            }
+
+            /* Keep sections together when possible */
+            .info-card,
+            .financial-form,
+            .calculation-group,
+            .tutorial-section {
+                page-break-inside: avoid !important;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                page-break-after: avoid !important;
+            }
+
+            /* Show input values */
+            input {
+                border: 1px solid #333 !important;
+                background: white !important;
+            }
+
+            /* Hide interactive elements not needed for print */
+            button.toggle-tutorial,
+            .no-print {
+                display: none !important;
+            }
+
+            /* Ensure colors and backgrounds print */
+            .info-card,
+            .financial-form,
+            .result {
+                background: #f8f9fa !important;
+                border: 1px solid #ccc !important;
+            }
+
+            .overall-score {
+                background: white !important;
+                border: 2px solid #333 !important;
+            }
+
+            /* Page breaks */
+            .page-break {
+                page-break-before: always !important;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-content">
+
+            
             <h1>Phase 1: Company Foundation & Financial Analysis</h1>
             <p>Apex Manufacturing Solutions | Chapter 14 </p>
         </div>
