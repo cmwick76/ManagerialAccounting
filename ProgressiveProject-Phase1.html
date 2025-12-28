@@ -32,6 +32,7 @@
 
         .header {
             background: var(--primary-blue);
+                        position: relative;
             color: var(--white);
             padding: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -41,6 +42,27 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
+        }
+
+                .print-pdf-link {
+            position: absolute;
+            right: 2rem;
+            bottom: 1rem;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .print-pdf-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
         }
 
         .header h1 {
@@ -595,6 +617,7 @@ display: grid;
                 display: none !important;
             }
 
+                        .print-pdf-link,
             /* Ensure colors and backgrounds print */
             .info-card,
             .financial-form,
@@ -622,6 +645,7 @@ display: grid;
             
             <h1>Phase 1: Company Foundation & Financial Analysis</h1>
             <p>Apex Manufacturing Solutions | Chapter 14 </p>
+                            <a href="javascript:window.print()" class="print-pdf-link">🖨️ Print PDF</a>
         </div>
     </div>
     <div class="accent-bar"></div>
