@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phase 4: Activity-Based Costing & Comparative Analysis | Apex Manufacturing</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Brand Colors - Apex Manufacturing */
+        :root {
+            --primary-blue: #0033A0;
+            --sunglow: #FFCB1F;
+            --battleship-gray: #898989;
+            --white: #FFFFFF;
+            --black: #000000;
+            --success-green: #5CB85C;
+            --error-red: #D9534F;
+        }
+
+        .header {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            font-weight: 400;
+            opacity: 0.95;
+        }
+
+        .accent-bar {
+            height: 8px;
+            background: linear-gradient(90deg, var(--sunglow) 0%, var(--primary-blue) 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .intro-section {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--sunglow);
+        }
+
+        .intro-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .tutorial-section {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            border-top: 5px solid var(--primary-blue);
+        }
+
+        .tutorial-section h2 {
+            color: var(--primary-blue);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 3rem;
+            transition: color 0.3s ease;
+        }
+
+        .tutorial-section h2::after {
+            content: '▼';
+            position: absolute;
+            right: 0.5rem;
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .tutorial-section.collapsed h2::after {
+            transform: rotate(90deg);
+        }
+
+        .tutorial-section h2:hover {
+            color: #0047cc;
+        }
+
+        .tutorial-section .tutorial-content {
+            max-height: 10000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .tutorial-section.collapsed .tutorial-content {
+            max-height: 0;
+        }
+
+        .tutorial-section h3 {
+            color: var(--primary-blue);
+            font-size: 1.3rem;
+            margin: 1.5rem 0 1rem 0;
+            font-weight: 600;
+            border-left: 4px solid var(--sunglow);
+            padding-left: 1rem;
+        }
+
+        .tutorial-section h4 {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 1rem 0 0.5rem 0;
+            font-weight: 600;
+        }
+
+        .step-list {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .step-list ol {
+            margin-left: 1.5rem;
+        }
+
+        .step-list li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .step-list li strong {
+            color: var(--primary-blue);
+        }
+
+        .code-example {
+            background: #263238;
+            color: #aed581;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--sunglow);
+        }
+
+        .code-example .comment {
+            color: #80CBC4;
+        }
+
+        .code-example .function {
+            color: #FFD54F;
+        }
+
+        .tip-box {
+            background: #e8f5e9;
+            border-left: 5px solid var(--success-green);
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .tip-box strong {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff9800;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box strong {
+            color: #ff9800;
+            font-weight: 700;
+        }
+
+        .example-table {
+            width: 100%;
+            margin: 1rem 0;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .example-table th {
+            background: var(--battleship-gray);
+            color: var(--white);
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .example-table td {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .example-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .tutorial-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+        }
+
+        .tutorial-nav a {
+            padding: 1rem;
+            background: var(--white);
+            color: var(--primary-blue);
+            text-decoration: none;
+            border-radius: 6px;
+            border: 2px solid var(--primary-blue);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .tutorial-nav a:hover {
+            background: var(--primary-blue);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,51,160,0.2);
+        }
+
+        .visual-example {
+            background: var(--white);
+            border: 2px solid #dee2e6;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .excel-cell {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid var(--primary-blue);
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 0.25rem;
+            font-weight: 600;
+        }
+
+        .excel-cell.formula {
+            background: #fff9e6;
+            border-color: var(--sunglow);
+        }
+
+        .excel-cell.result {
+            background: #e8f5e9;
+            border-color: var(--success-green);
+        }
+
+        .instructions {
+            background: #fff9e6;
+            border-left: 5px solid var(--sunglow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+
+        .instructions h4 {
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .instructions ul {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .check-figures-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0047cc 100%);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,51,160,0.3);
+            margin-top: 2rem;
+            color: var(--white);
+        }
+
+        .check-figures-section h3 {
+            color: var(--sunglow);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .check-figures-section p {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+        }
+
+        .check-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .check-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 203, 31, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .check-item:hover {
+            border-color: var(--sunglow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.2);
+        }
+
+        .check-item label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--sunglow);
+            font-size: 0.95rem;
+            line-height: 1.3;
+        }
+
+        .check-item input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--black);
+            transition: all 0.3s ease;
+        }
+
+        .check-item input:focus {
+            outline: none;
+            border-color: var(--sunglow);
+            background: var(--white);
+        }
+
+        .check-item .feedback {
+            margin-top: 0.8rem;
+            padding: 0.6rem;
+            border-radius: 4px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .check-item .feedback.correct {
+            background: var(--success-green);
+            color: var(--white);
+            display: block;
+        }
+
+        .check-item .feedback.incorrect {
+            background: var(--error-red);
+            color: var(--white);
+            display: block;
+        }
+
+        .verify-all-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 2rem auto 0;
+            padding: 1.2rem 2rem;
+            background: var(--sunglow);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: 'Raleway', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 203, 31, 0.3);
+        }
+
+        .verify-all-btn:hover {
+            background: #ffd84d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 203, 31, 0.4);
+        }
+
+        .verify-all-btn:active {
+            transform: translateY(0);
+        }
+
+        .overall-score {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        .overall-score.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+
+            .tutorial-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: var(--sunglow);
+            margin-left: 5px;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .comparison-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .comparison-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 6px;
+            border: 2px solid #dee2e6;
+        }
+
+        .comparison-item h5 {
+            color: var(--primary-blue);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Phase 4: Activity-Based Costing & Comparative Analysis</h1>
+            <p>Apex Manufacturing Solutions | Chapter 17</p>
+        </div>
+    </div>
+    <div class="accent-bar"></div>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to Phase 4!</h2>
+            <p>Traditional costing is distorting Apex's product profitability! This phase introduces Activity-Based Costing (ABC) to accurately assign overhead costs based on actual resource consumption. You'll compare traditional vs. ABC methods, identify over/under-costed products, and create sophisticated comparative pivot table analyses to reveal the true profitability story.</p>
+        </div>
+
+        <div class="instructions">
+            <h4>📋 Phase 4 Requirements:</h4>
+            <ul>
+                <li><strong>ABC Implementation:</strong> Calculate activity rates, assign overhead to products using multiple cost drivers, determine ABC product costs</li>
+                <li><strong>Comparative Analysis (Pivot Tables - 15% of Phase 4 grade):</strong>
+                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                        <li>Task 1: Create pivot table comparing Traditional vs. ABC costs</li>
+                        <li>Task 2: Calculate cost differences and % variance with calculated fields</li>
+                        <li>Task 3: Build profitability dashboard with product ranking</li>
+                        <li>Task 4: Add data bars and icon sets for visual analysis</li>
+                    </ul>
+                </li>
+                <li><strong>Management Report:</strong> Analyze which products are over/under-costed, recommend pricing adjustments, identify process improvement opportunities</li>
+                <li>Advanced Excel: Comparative analysis, variance calculations, conditional formatting strategies</li>
+            </ul>
+        </div>
+
+        <div class="tutorial-nav">
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">💰 ABC vs Traditional</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">🔀 Comparative Pivot Tables</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">📐 Variance Calculations</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">📊 Data Bars & Icons</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">🎯 What-If Analysis</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">🔍 Profitability Analysis</a>
+        </div>
+
+        <!-- TUTORIAL 1: ABC VS TRADITIONAL -->
+        <div id="tutorial1" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial1')">💰 Tutorial 1: Understanding ABC vs. Traditional Costing</h2>
+            <div class="tutorial-content">
+            <p>Activity-Based Costing (ABC) provides more accurate product costs by tracing overhead to products based on the activities they consume, not just a single allocation base.</p>
+
+            <h3>Traditional Costing vs. ABC</h3>
+            <div class="comparison-box">
+                <div class="comparison-item">
+                    <h5>🏭 Traditional Costing</h5>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; font-size: 0.95rem;">
+                        <li>Single overhead rate</li>
+                        <li>Usually based on direct labor hours or machine hours</li>
+                        <li>Simple to calculate</li>
+                        <li>May distort product costs</li>
+                        <li>Over-costs simple products</li>
+                        <li>Under-costs complex products</li>
+                    </ul>
+                </div>
+                <div class="comparison-item">
+                    <h5>🎯 Activity-Based Costing</h5>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem; font-size: 0.95rem;">
+                        <li>Multiple overhead rates</li>
+                        <li>Based on cost drivers for each activity</li>
+                        <li>More complex but accurate</li>
+                        <li>Reflects actual resource use</li>
+                        <li>Better for complex operations</li>
+                        <li>Identifies cost improvement areas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Key ABC Concepts</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Term</th>
+                        <th>Definition</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Activity</strong></td>
+                        <td>Task that consumes resources</td>
+                        <td>Machine setups, Quality inspections, Material handling</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost Driver</strong></td>
+                        <td>Factor that causes activity costs</td>
+                        <td># of setups, # of inspections, # of moves</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Activity Rate</strong></td>
+                        <td>Cost per unit of cost driver</td>
+                        <td>$450 per setup, $75 per inspection</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cost Pool</strong></td>
+                        <td>Group of related overhead costs</td>
+                        <td>All setup-related costs grouped together</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>ABC Implementation Steps</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Identify Activities</strong> - List major overhead activities (setup, inspection, ordering, etc.)</li>
+                    <li><strong>Assign Costs to Activities</strong> - Allocate overhead to each activity cost pool</li>
+                    <li><strong>Identify Cost Drivers</strong> - Determine what drives each activity's costs</li>
+                    <li><strong>Calculate Activity Rates</strong> - Divide activity cost by total cost driver quantity</li>
+                    <li><strong>Assign Costs to Products</strong> - Multiply activity rate × product's use of driver</li>
+                    <li><strong>Calculate Total Product Cost</strong> - Direct materials + Direct labor + ABC overhead</li>
+                </ol>
+            </div>
+
+            <h3>Example Calculation</h3>
+            <div class="visual-example">
+                <p><strong>Activity: Machine Setups</strong></p>
+                <p>Total Setup Costs: $135,000</p>
+                <p>Total Setups: 300</p>
+                <p><span class="excel-cell formula">Activity Rate = $135,000 / 300 = $450 per setup</span></p>
+                <p style="margin-top: 1rem;"><strong>Product A uses 25 setups:</strong></p>
+                <p><span class="excel-cell result">Setup cost for Product A = 25 × $450 = $11,250</span></p>
+            </div>
+
+            <h3>Why ABC Matters at Apex</h3>
+            <p>Apex produces both simple standard products and complex custom products. Traditional costing allocates overhead based on machine hours, but:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li><strong>Standard products:</strong> High volume, few setups, minimal inspection</li>
+                <li><strong>Custom products:</strong> Low volume, many setups, extensive inspection</li>
+            </ul>
+            <p style="margin-top: 0.5rem;">Result: Traditional costing over-costs standard products and under-costs custom products, leading to poor pricing decisions!</p>
+
+            <div class="tip-box">
+                <strong>💡 COST DISTORTION:</strong> ABC often reveals that high-volume simple products are more profitable than believed, while low-volume complex products may be unprofitable. This insight drives better pricing and product mix decisions!
+            </div>
+
+            <h3>Apex's Activities and Cost Drivers</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Cost Pool</th>
+                        <th>Cost Driver</th>
+                        <th>Why This Driver?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Machine Setups</td>
+                        <td>$135,000</td>
+                        <td># of Setups</td>
+                        <td>Complex products need more setups</td>
+                    </tr>
+                    <tr>
+                        <td>Quality Inspections</td>
+                        <td>$89,000</td>
+                        <td># of Inspections</td>
+                        <td>Custom work requires more checks</td>
+                    </tr>
+                    <tr>
+                        <td>Material Handling</td>
+                        <td>$67,000</td>
+                        <td># of Moves</td>
+                        <td>More complex = more material moves</td>
+                    </tr>
+                    <tr>
+                        <td>Machine Operations</td>
+                        <td>$186,000</td>
+                        <td>Machine Hours</td>
+                        <td>Direct correlation to machine time</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="warning-box">
+                <strong>⚠️ COMMON MISTAKE:</strong> Don't confuse cost drivers with activities. The activity is "Machine Setups" (the task). The cost driver is "Number of Setups" (what causes the cost). Products consume activities, measured by cost drivers!
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 2: COMPARATIVE PIVOT TABLES -->
+        <div id="tutorial2" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial2')">🔀 Tutorial 2: Creating Comparative Pivot Tables</h2>
+            <div class="tutorial-content">
+            <p>Comparative pivot tables let you analyze Traditional vs. ABC costs side-by-side to identify cost distortions and their impact on profitability.</p>
+
+            <h3>What is Comparative Analysis?</h3>
+            <p>Comparative analysis places two or more metrics side-by-side to:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>Identify differences and variances</li>
+                <li>Calculate percentage changes</li>
+                <li>Spot over/under-costed products</li>
+                <li>Make data-driven decisions</li>
+                <li>Understand the magnitude of distortion</li>
+            </ul>
+
+            <h3>Task 1: Building the Comparison Pivot Table</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Create pivot table</strong> from product costing data</li>
+                    <li><strong>Add 'Product Name'</strong> to ROWS</li>
+                    <li><strong>Add 'Traditional OH Cost'</strong> to VALUES</li>
+                    <li><strong>Add 'ABC OH Cost'</strong> to VALUES</li>
+                    <li><strong>Add 'Total Traditional Cost'</strong> to VALUES</li>
+                    <li><strong>Add 'Total ABC Cost'</strong> to VALUES</li>
+                    <li><strong>Format all values</strong> as Currency with 0 decimals</li>
+                    <li><strong>Rename columns</strong> to be clear:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>"Traditional OH" instead of "Sum of Traditional OH Cost"</li>
+                            <li>"ABC OH" instead of "Sum of ABC OH Cost"</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Your pivot table structure:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Trad. OH</th>
+                            <th>ABC OH</th>
+                            <th>Trad. Total</th>
+                            <th>ABC Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Standard Widget</td>
+                            <td>$42,500</td>
+                            <td>$35,200</td>
+                            <td>$127,500</td>
+                            <td>$120,200</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Assembly</td>
+                            <td>$38,000</td>
+                            <td>$48,900</td>
+                            <td>$118,000</td>
+                            <td>$128,900</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Arranging Multiple Value Fields</h3>
+            <p>When you have multiple value fields, Excel lets you organize them:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Layout Option</th>
+                        <th>How It Looks</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Columns</strong></td>
+                        <td>All values as separate columns</td>
+                        <td>Comparing 2-4 metrics (use this!)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Rows</strong></td>
+                        <td>Values stacked under each product</td>
+                        <td>Single metric broken down</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 COLUMN ORGANIZATION:</strong> In the PivotTable Fields pane, drag "Values" between Rows and Columns areas to change the layout. For comparison, keep Values in the COLUMNS area so metrics appear side-by-side!
+            </div>
+
+            <h3>Adding Descriptive Information</h3>
+            <p>Enhance your comparison with additional context:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Add 'Product Type'</strong> to Rows (above Product Name)</li>
+                    <li><strong>This groups products:</strong> Standard vs. Custom</li>
+                    <li><strong>Expand/collapse</strong> groups with [+] / [-] buttons</li>
+                    <li><strong>See subtotals</strong> for each product type</li>
+                </ol>
+            </div>
+
+            <h3>Sorting for Impact</h3>
+            <p>Sort to highlight the biggest distortions:</p>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Right-click any value</strong> in Traditional OH column</li>
+                <li><strong>Sort → Largest to Smallest</strong></li>
+                <li>Products with highest traditional OH appear first</li>
+                <li>Instantly see which products are most affected</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ SORTING CAVEAT:</strong> When you have grouped rows (Product Type → Product Name), sorting affects only the level you click. Sort at the Product Name level to reorder products within each type, or sort at Product Type level to reorder the types themselves.
+            </div>
+
+            <h3>Comparative Pivot Table Best Practices</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Use consistent number formatting (all currency or all percentages)</li>
+                <li>Rename columns to remove "Sum of" prefix</li>
+                <li>Apply banded rows for readability</li>
+                <li>Use subtotals to see group-level differences</li>
+                <li>Consider adding a slicer for Product Type to filter quickly</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 3: VARIANCE CALCULATIONS -->
+        <div id="tutorial3" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial3')">📐 Tutorial 3: Calculating Variances in Pivot Tables</h2>
+            <div class="tutorial-content">
+            <p>Variance analysis quantifies the difference between Traditional and ABC costs, helping you understand the magnitude and direction of cost distortion.</p>
+
+            <h3>Types of Variance to Calculate</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Variance Type</th>
+                        <th>Formula</th>
+                        <th>What It Shows</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Dollar Variance</strong></td>
+                        <td>ABC Cost - Traditional Cost</td>
+                        <td>Absolute amount of distortion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>% Variance</strong></td>
+                        <td>(ABC - Trad) / Trad × 100</td>
+                        <td>Relative size of distortion</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Over/Under Costed</strong></td>
+                        <td>If variance > 0: Under-costed<br>If variance < 0: Over-costed</td>
+                        <td>Direction of distortion</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Task 2: Creating Variance Calculated Fields</h3>
+            <p><strong>Step 1: Dollar Variance Field</strong></p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Click in your pivot table</strong></li>
+                    <li><strong>PivotTable Analyze</strong> → Fields, Items, & Sets → Calculated Field</li>
+                    <li><strong>Name:</strong> "OH Variance"</li>
+                    <li><strong>Formula:</strong> = 'ABC OH Cost' - 'Traditional OH Cost'</li>
+                    <li><strong>Click Add</strong>, then OK</li>
+                    <li><strong>Format as Currency</strong></li>
+                </ol>
+            </div>
+
+            <p style="margin-top: 1.5rem;"><strong>Step 2: Percentage Variance Field</strong></p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>PivotTable Analyze</strong> → Calculated Field again</li>
+                    <li><strong>Name:</strong> "OH Variance %"</li>
+                    <li><strong>Formula:</strong> = ('ABC OH Cost' - 'Traditional OH Cost') / 'Traditional OH Cost'</li>
+                    <li><strong>Click Add</strong>, then OK</li>
+                    <li><strong>Format as Percentage</strong> with 1 decimal place</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Result with variance fields:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Trad. OH</th>
+                            <th>ABC OH</th>
+                            <th>$ Variance</th>
+                            <th>% Variance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Standard Widget</td>
+                            <td>$42,500</td>
+                            <td>$35,200</td>
+                            <td style="color: green;">-$7,300</td>
+                            <td style="color: green;">-17.2%</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Assembly</td>
+                            <td>$38,000</td>
+                            <td>$48,900</td>
+                            <td style="color: red;">+$10,900</td>
+                            <td style="color: red;">+28.7%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 0.5rem;"><strong>Interpretation:</strong></p>
+                <p style="font-size: 0.9rem;">• Standard Widget: <span style="color: green;">Over-costed by $7,300 (17.2%)</span> - Actually cheaper than we thought!</p>
+                <p style="font-size: 0.9rem;">• Custom Assembly: <span style="color: red;">Under-costed by $10,900 (28.7%)</span> - Actually more expensive!</p>
+            </div>
+
+            <h3>Interpreting Variance Signs</h3>
+            <div class="comparison-box">
+                <div class="comparison-item">
+                    <h5 style="color: green;">Negative Variance</h5>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">ABC < Traditional</p>
+                    <p style="font-size: 0.9rem;"><strong>Product was OVER-COSTED</strong></p>
+                    <p style="font-size: 0.9rem;">Traditional method assigned too much overhead</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Action:</strong> Could lower price to be more competitive</p>
+                </div>
+                <div class="comparison-item">
+                    <h5 style="color: red;">Positive Variance</h5>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">ABC > Traditional</p>
+                    <p style="font-size: 0.9rem;"><strong>Product was UNDER-COSTED</strong></p>
+                    <p style="font-size: 0.9rem;">Traditional method assigned too little overhead</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;"><strong>Action:</strong> May need price increase or process improvement</p>
+                </div>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 BUSINESS INSIGHT:</strong> Large positive % variances on low-volume custom products indicate they're consuming disproportionate resources. Consider: raising prices, streamlining processes, or discontinuing unprofitable items.
+            </div>
+
+            <h3>Adding Total Cost Variance</h3>
+            <p>Don't forget to calculate variance on total product cost (not just overhead):</p>
+            <div class="code-example">
+<span class="comment">// Calculated Field</span>
+Name: <span class="function">"Total Cost Variance"</span>
+Formula: = <span class="function">'Total ABC Cost' - 'Total Traditional Cost'</span>
+
+<span class="comment">// This shows the complete picture including DM + DL + OH</span>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ GRAND TOTAL CAUTION:</strong> With percentage variances, the Grand Total row shows the average % variance (weighted by volume), not the % variance of the totals. This is usually fine, but be aware when interpreting!
+            </div>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 4: DATA BARS & ICONS -->
+        <div id="tutorial4" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial4')">📊 Tutorial 4: Visualizing with Data Bars & Icon Sets</h2>
+            <div class="tutorial-content">
+            <p>Data bars and icon sets add instant visual impact to your comparative analysis, making it easy to spot over/under-costed products at a glance.</p>
+
+            <h3>When to Use Each Visualization</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Visualization</th>
+                        <th>Best For</th>
+                        <th>Example Use</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Data Bars</strong></td>
+                        <td>Showing relative magnitude</td>
+                        <td>Dollar variance amounts</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Color Scales</strong></td>
+                        <td>Heat maps, gradient comparisons</td>
+                        <td>Cost per unit across products</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Icon Sets</strong></td>
+                        <td>Categorizing into 3-5 levels</td>
+                        <td>Variance % (high/medium/low)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Task 4A: Adding Data Bars to Dollar Variance</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select the variance column</strong> in your pivot table (click any dollar variance value)</li>
+                    <li><strong>Click and drag</strong> to select all variance values (not headers/totals)</li>
+                    <li><strong>Home tab</strong> → Conditional Formatting</li>
+                    <li><strong>Data Bars</strong> → Gradient Fill → Blue Data Bar</li>
+                    <li><strong>Result:</strong> Bars show proportional to variance size
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Longer bars = Larger variance (more distortion)</li>
+                            <li>Negative values show bars going left</li>
+                            <li>Positive values show bars going right</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Data bars visualization:</strong></p>
+                <p style="font-family: 'Courier New'; font-size: 0.9rem;">Standard Widget    -$7,300  <span style="color: green;">███████░░░</span> (over-costed)</p>
+                <p style="font-family: 'Courier New'; font-size: 0.9rem;">Custom Assembly   +$10,900  <span style="color: red;">░░░██████████</span> (under-costed)</p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;">Instantly see which products have the largest distortion!</p>
+            </div>
+
+            <h3>Task 4B: Adding Icon Sets to % Variance</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Select the % variance column</strong></li>
+                    <li><strong>Conditional Formatting</strong> → Icon Sets</li>
+                    <li><strong>Choose "3 Arrows (Colored)"</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>🔴 Red Down Arrow = Negative variance (over-costed)</li>
+                            <li>🟡 Yellow Sideways = Small variance (±5%)</li>
+                            <li>🟢 Green Up Arrow = Positive variance (under-costed)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Customize thresholds:</strong> Manage Rules → Edit Rule
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Green when >= 10%</li>
+                            <li>Yellow when >= -10% and < 10%</li>
+                            <li>Red when < -10%</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 ICON CUSTOMIZATION:</strong> Click "More Rules" after selecting icon set to customize: (1) which icons to use, (2) threshold values, (3) whether to show numbers with icons, or (4) icons only. For business reports, show both numbers and icons!
+            </div>
+
+            <h3>Alternative Icon Sets</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Icon Set</th>
+                        <th>When to Use</th>
+                        <th>Visual Impact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>3 Traffic Lights</td>
+                        <td>Clear good/bad/neutral</td>
+                        <td>🔴 🟡 🟢 Intuitive for everyone</td>
+                    </tr>
+                    <tr>
+                        <td>3 Flags</td>
+                        <td>Priority levels</td>
+                        <td>🚩 Highlights issues to address</td>
+                    </tr>
+                    <tr>
+                        <td>5 Quarters</td>
+                        <td>More granular categories</td>
+                        <td>◔◑◕● Shows subtle differences</td>
+                    </tr>
+                    <tr>
+                        <td>3 Symbols (Circled)</td>
+                        <td>Professional reports</td>
+                        <td>✓ X ! Clean and formal</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Combining Multiple Conditional Formats</h3>
+            <p>You can apply multiple formats to the same cells:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Apply icon set</strong> to % variance column</li>
+                    <li><strong>Then apply color scale</strong> to same column:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Red background for large negative (over-costed)</li>
+                            <li>White background for near zero</li>
+                            <li>Green background for large positive (under-costed)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Result:</strong> Icons + background colors for maximum impact</li>
+                </ol>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ DON'T OVER-FORMAT:</strong> Too many colors, icons, and data bars make the table confusing. Choose ONE visualization per column. Use data bars for dollar amounts, icons for percentages, and color scales sparingly.
+            </div>
+
+            <h3>Removing Conditional Formatting</h3>
+            <p>To start over or clean up:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Select formatted cells</li>
+                <li>Conditional Formatting → Clear Rules → Clear Rules from Selected Cells</li>
+                <li>Or manage all rules: Conditional Formatting → Manage Rules</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 5: WHAT-IF ANALYSIS -->
+        <div id="tutorial5" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial5')">🎯 Tutorial 5: What-If Analysis Tools</h2>
+            <div class="tutorial-content">
+            <p>What-if analysis lets you test different scenarios: "What if we change the setup cost?" or "What if we reduce inspections?" These tools help you model improvements before implementing them.</p>
+
+            <h3>Excel's What-If Tools</h3>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Purpose</th>
+                        <th>Best For</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Goal Seek</strong></td>
+                        <td>Find input needed for desired output</td>
+                        <td>"What setup rate gives us breakeven?"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scenario Manager</strong></td>
+                        <td>Save and compare multiple scenarios</td>
+                        <td>Best case, Worst case, Most likely</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Table</strong></td>
+                        <td>Show results across range of values</td>
+                        <td>Sensitivity analysis, breakeven charts</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Using Goal Seek</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Set up your calculation</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Example: Cell B10 = Activity rate for setups</li>
+                            <li>Cell D20 = Total ABC cost for Product A</li>
+                            <li>Cell D20 formula uses B10 in calculation</li>
+                        </ul>
+                    </li>
+                    <li><strong>Data tab</strong> → What-If Analysis → Goal Seek</li>
+                    <li><strong>Set cell:</strong> D20 (total cost)</li>
+                    <li><strong>To value:</strong> 150000 (target cost)</li>
+                    <li><strong>By changing cell:</strong> B10 (setup rate)</li>
+                    <li><strong>Click OK</strong></li>
+                    <li>Excel finds the setup rate needed to achieve $150,000 total cost!</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Goal Seek Example:</strong></p>
+                <p>Question: "What setup cost per batch would make Custom Assembly profitable at current price?"</p>
+                <p><strong>Set cell:</strong> Profit (Current: -$2,500)</p>
+                <p><strong>To value:</strong> 0 (breakeven)</p>
+                <p><strong>By changing:</strong> Setup cost per batch</p>
+                <p><strong>Result:</strong> Need to reduce setup cost from $450 to $387 per batch</p>
+            </div>
+
+            <h3>Using Scenario Manager</h3>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Data tab</strong> → What-If Analysis → Scenario Manager</li>
+                    <li><strong>Click Add</strong> to create first scenario</li>
+                    <li><strong>Scenario name:</strong> "Current State"</li>
+                    <li><strong>Changing cells:</strong> Select cells with activity rates (B10:B13)</li>
+                    <li><strong>Click OK</strong>, enter current values</li>
+                    <li><strong>Create more scenarios:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>"Process Improvement" - Reduced setup/inspection costs</li>
+                            <li>"Automation" - Lower labor, higher machine costs</li>
+                            <li>"Worst Case" - 20% cost increase across all activities</li>
+                        </ul>
+                    </li>
+                    <li><strong>Switch between scenarios:</strong> Click "Show" button</li>
+                    <li><strong>Create summary report:</strong> Click "Summary" button</li>
+                </ol>
+            </div>
+
+            <h3>Creating a Data Table (Sensitivity Analysis)</h3>
+            <p>Data tables show how changing 1 or 2 variables affects a result:</p>
+
+            <h4>One-Variable Data Table</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Set up column of inputs:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>A1: Setup cost per batch</li>
+                            <li>A2: $300, A3: $350, A4: $400... up to $600</li>
+                        </ul>
+                    </li>
+                    <li><strong>In B1:</strong> Formula referring to total cost = D20</li>
+                    <li><strong>Select range</strong> A1:B10 (inputs + formula)</li>
+                    <li><strong>Data tab</strong> → What-If Analysis → Data Table</li>
+                    <li><strong>Column input cell:</strong> B10 (the setup cost cell in your model)</li>
+                    <li><strong>Click OK</strong></li>
+                    <li>Column B fills with total cost at each setup cost level!</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <strong>💡 CHART YOUR DATA TABLE:</strong> After creating a data table, select the results and create a line chart. This visualizes the sensitivity - how steeply does cost rise with setup cost increases? Flat line = not very sensitive. Steep line = very sensitive!
+            </div>
+
+            <h3>Two-Variable Data Table</h3>
+            <p>Analyze impact of changing TWO variables simultaneously:</p>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Set up grid:</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Row 1: Inspection costs ($50, $75, $100, $125)</li>
+                            <li>Column A: Setup costs ($300, $350, $400...)</li>
+                            <li>Cell A1: Formula for total cost</li>
+                        </ul>
+                    </li>
+                    <li><strong>Select entire grid</strong> including headers</li>
+                    <li><strong>Data Table</strong> dialog:
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Row input cell: Inspection cost cell</li>
+                            <li>Column input cell: Setup cost cell</li>
+                        </ul>
+                    </li>
+                    <li><strong>Result:</strong> Matrix showing total cost for every combination!</li>
+                </ol>
+            </div>
+
+            <div class="visual-example">
+                <p><strong>Two-Variable Data Table Result:</strong></p>
+                <table class="example-table" style="font-size: 0.85rem;">
+                    <thead>
+                        <tr>
+                            <th>Setup \ Insp.</th>
+                            <th>$50</th>
+                            <th>$75</th>
+                            <th>$100</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>$300</td>
+                            <td>$142,500</td>
+                            <td>$145,800</td>
+                            <td>$149,100</td>
+                        </tr>
+                        <tr>
+                            <td>$400</td>
+                            <td>$152,500</td>
+                            <td>$155,800</td>
+                            <td>$159,100</td>
+                        </tr>
+                        <tr>
+                            <td>$500</td>
+                            <td>$162,500</td>
+                            <td>$165,800</td>
+                            <td>$169,100</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="warning-box">
+                <strong>⚠️ DATA TABLE LIMITATION:</strong> Data tables are array formulas and recalculate with any change to the worksheet. On large models, this can slow down Excel. If needed, switch to Manual calculation: Formulas tab → Calculation Options → Manual.
+            </div>
+
+            <h3>Practical What-If Applications</h3>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Process Improvement:</strong> Model cost reduction from fewer setups or inspections</li>
+                <li><strong>Pricing Decisions:</strong> Find breakeven price under ABC costing</li>
+                <li><strong>Make-or-Buy:</strong> At what activity level is outsourcing cheaper?</li>
+                <li><strong>Product Mix:</strong> Which combination maximizes profit under ABC?</li>
+                <li><strong>Capital Investment:</strong> Justify automation by showing long-term cost savings</li>
+            </ul>
+            </div>
+        </div>
+
+        <!-- TUTORIAL 6: PROFITABILITY ANALYSIS -->
+        <div id="tutorial6" class="tutorial-section">
+            <h2 onclick="toggleTutorial('tutorial6')">🔍 Tutorial 6: Product Profitability Analysis Dashboard</h2>
+            <div class="tutorial-content">
+            <p>The ultimate goal of ABC is better decision-making. Create a profitability dashboard that ranks products, identifies winners and losers, and guides strategic decisions.</p>
+
+            <h3>Task 3: Building the Profitability Dashboard</h3>
+            <p>Your dashboard should answer these key questions:</p>
+            <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                <li>Which products are actually profitable under ABC?</li>
+                <li>Which products had the most cost distortion?</li>
+                <li>What's our profit margin by product under ABC vs. Traditional?</li>
+                <li>Should we adjust pricing or discontinue any products?</li>
+            </ul>
+
+            <h4>Dashboard Components</h4>
+            <div class="step-list">
+                <ol>
+                    <li><strong>Pivot Table 1: Product Ranking by ABC Profit</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Rows: Product Name</li>
+                            <li>Values: Sales Revenue, ABC Total Cost, ABC Profit</li>
+                            <li>Add calculated field: Profit Margin % = Profit / Revenue</li>
+                            <li>Sort by ABC Profit (highest to lowest)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pivot Table 2: Traditional vs. ABC Profit Comparison</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Rows: Product Name</li>
+                            <li>Values: Traditional Profit, ABC Profit, Profit Change</li>
+                            <li>Shows which products' profitability changed most</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pivot Chart 1: Waterfall Chart</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Shows profit contribution by product</li>
+                            <li>Visualizes profitable vs. unprofitable products</li>
+                        </ul>
+                    </li>
+                    <li><strong>Pivot Chart 2: Profit Margin Comparison (Clustered Bar)</strong>
+                        <ul style="margin-top: 0.5rem;">
+                            <li>Traditional margin % vs. ABC margin %</li>
+                            <li>Shows which products need pricing adjustments</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <h3>Profit Margin Calculated Field</h3>
+            <div class="code-example">
+<span class="comment">// In your profitability pivot table</span>
+Name: <span class="function">"ABC Profit Margin %"</span>
+Formula: = (<span class="function">'Sales Revenue' - 'Total ABC Cost'</span>) / <span class="function">'Sales Revenue'</span>
+
+<span class="comment">// Format as Percentage with 1 decimal</span>
+<span class="comment">// Shows what % of revenue becomes profit</span>
+            </div>
+
+            <h3>Conditional Formatting for Profitability</h3>
+            <p>Apply icon sets to profit margin column:</p>
+            <ul style="margin-left: 2rem;">
+                <li>🟢 Green: Margin ≥ 20% (Healthy)</li>
+                <li>🟡 Yellow: Margin 10-20% (Acceptable)</li>
+                <li>🔴 Red: Margin < 10% (Concerning)</li>
+                <li>🔻 Red Down: Negative margin (Unprofitable!)</li>
+            </ul>
+
+            <h3>Product Classification Matrix</h3>
+            <p>Categorize products based on volume and profitability:</p>
+            <table class="example-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Criteria</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Stars ⭐</strong></td>
+                        <td>High volume + High margin</td>
+                        <td>Protect, grow, maintain quality</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cash Cows 💰</strong></td>
+                        <td>High volume + Medium margin</td>
+                        <td>Maximize efficiency, milk profits</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Specialties 💎</strong></td>
+                        <td>Low volume + High margin</td>
+                        <td>Premium pricing justified</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Question Marks ❓</strong></td>
+                        <td>Low volume + Medium margin</td>
+                        <td>Evaluate: grow or exit?</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dogs 🐕</strong></td>
+                        <td>Low margin or negative</td>
+                        <td>Raise prices, improve process, or discontinue</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box">
+                <strong>💡 STRATEGIC INSIGHT:</strong> Products that moved from profitable (Traditional) to unprofitable (ABC) are consuming excessive resources. Options: (1) Raise prices to reflect true cost, (2) Streamline processes to reduce activity consumption, or (3) Discontinue if unprofitable even at higher price.
+            </div>
+
+            <h3>Dashboard Layout Recommendation</h3>
+            <div class="visual-example">
+                <p><strong>Suggested Dashboard Structure:</strong></p>
+                <pre style="font-family: 'Courier New'; font-size: 0.85rem; color: #666;">
+┌─────────────────────────────────────────────────────┐
+│ APEX - ABC PROFITABILITY ANALYSIS                   │
+├─────────────────────┬───────────────────────────────┤
+│ Product Ranking     │  Profit Margin Comparison     │
+│ (Pivot Table)       │  (Clustered Bar Chart)        │
+│ + Profit Margins    │  Trad vs ABC margins          │
+│ + Icon Sets         │                               │
+├─────────────────────┼───────────────────────────────┤
+│ Cost Distortion     │  Waterfall Chart              │
+│ (Pivot Table)       │  Profit Contribution by       │
+│ + Variance %        │  Product (descending)         │
+│ + Data Bars         │                               │
+└─────────────────────┴───────────────────────────────┘
+                </pre>
+            </div>
+
+            <h3>Key Metrics to Highlight</h3>
+            <ul style="margin-left: 2rem;">
+                <li><strong>Total profit impact:</strong> Sum of all profit changes (ABC - Traditional)</li>
+                <li><strong>Most under-costed product:</strong> Largest positive variance</li>
+                <li><strong>Most over-costed product:</strong> Largest negative variance</li>
+                <li><strong>Newly unprofitable products:</strong> Profitable under Traditional, unprofitable under ABC</li>
+                <li><strong>Margin improvement opportunities:</strong> Products where ABC shows better margin</li>
+            </ul>
+
+            <div class="warning-box">
+                <strong>⚠️ IMPLEMENTATION CAUTION:</strong> Don't make drastic changes based solely on one ABC analysis. Use insights to guide further investigation. Consider: strategic value, customer relationships, market position, and long-term potential before discontinuing products.
+            </div>
+
+            <h3>Management Report Talking Points</h3>
+            <p>Your Phase 4 report should address:</p>
+            <ul style="margin-left: 2rem;">
+                <li>Executive summary of ABC vs. Traditional findings</li>
+                <li>Identification of over/under-costed products with dollar impact</li>
+                <li>Profitability ranking under ABC</li>
+                <li>Pricing recommendations (which products to raise/lower)</li>
+                <li>Process improvement priorities (which activities to streamline)</li>
+                <li>Product mix recommendations (grow/maintain/exit decisions)</li>
+                <li>Implementation timeline for ABC system</li>
+            </ul>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h4>🎯 Ready to Complete Phase 4!</h4>
+            <p style="margin-top: 0.5rem;">You've learned ABC costing and advanced comparative analysis! Apply these skills:</p>
+            <ul style="margin-top: 0.5rem;">
+                <li>Calculate activity rates and assign ABC overhead to products</li>
+                <li>Build comparative pivot table (Traditional vs. ABC)</li>
+                <li>Create variance calculated fields ($ and %)</li>
+                <li>Apply data bars and icon sets for visual impact</li>
+                <li>Build profitability dashboard with rankings</li>
+                <li>Perform what-if analysis on activity costs</li>
+                <li>Write strategic recommendations based on ABC insights</li>
+            </ul>
+        </div>
+
+        <div class="check-figures-section">
+            <h3>✓ Interactive Check Figures - Activity-Based Costing</h3>
+            <p>Enter your calculated values below to verify your ABC implementation. The system will provide immediate feedback!</p>
+
+            <div class="check-grid">
+                <div class="check-item">
+                    <label for="setupRate">
+                        Activity Rate - Machine Setups
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Total Setup Costs / Total # of Setups</span>
+                        </span>
+                    </label>
+                    <input type="text" id="setupRate" placeholder="Enter rate (e.g., 475.00)" oninput="checkValue(this, 450.00, 1)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="inspectionRate">
+                        Activity Rate - Quality Inspections
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Total Inspection Costs / Total # of Inspections</span>
+                        </span>
+                    </label>
+                    <input type="text" id="inspectionRate" placeholder="Enter rate (e.g., 80.00)" oninput="checkValue(this, 74.17, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="standardABC">
+                        ABC Total Cost - Standard Widget
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">DM + DL + ABC Overhead for Standard Widget</span>
+                        </span>
+                    </label>
+                    <input type="text" id="standardABC" placeholder="Enter amount (e.g., 125,000)" oninput="checkValue(this, 120200)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="customABC">
+                        ABC Total Cost - Custom Assembly
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">DM + DL + ABC Overhead for Custom Assembly</span>
+                        </span>
+                    </label>
+                    <input type="text" id="customABC" placeholder="Enter amount (e.g., 135,000)" oninput="checkValue(this, 128900)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="standardVariance">
+                        Cost Variance - Standard Widget
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">ABC Total Cost - Traditional Total Cost</span>
+                        </span>
+                    </label>
+                    <input type="text" id="standardVariance" placeholder="Enter amount (e.g., -8,000)" oninput="checkValue(this, -7300)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="customVariance">
+                        Cost Variance - Custom Assembly
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">ABC Total Cost - Traditional Total Cost</span>
+                        </span>
+                    </label>
+                    <input type="text" id="customVariance" placeholder="Enter amount (e.g., 12,000)" oninput="checkValue(this, 10900)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="standardPctVar">
+                        % Variance - Standard Widget
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">(ABC - Traditional) / Traditional × 100</span>
+                        </span>
+                    </label>
+                    <input type="text" id="standardPctVar" placeholder="Enter % (e.g., -15.5)" oninput="checkValue(this, -17.2, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="customPctVar">
+                        % Variance - Custom Assembly
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">(ABC - Traditional) / Traditional × 100</span>
+                        </span>
+                    </label>
+                    <input type="text" id="customPctVar" placeholder="Enter % (e.g., 25.0)" oninput="checkValue(this, 28.7, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+            </div>
+
+            <button class="verify-all-btn" onclick="verifyAll()">🎯 Verify All Answers</button>
+            
+            <div class="overall-score" id="overallScore"></div>
+        </div>
+    </div>
+
+    <script>
+        // Store correct answers
+        const correctAnswers = {
+            setupRate: 450.00,
+            inspectionRate: 74.17,
+            standardABC: 120200,
+            customABC: 128900,
+            standardVariance: -7300,
+            customVariance: 10900,
+            standardPctVar: -17.2,
+            customPctVar: 28.7
+        };
+
+        // Store tolerance for each answer
+        const tolerances = {
+            setupRate: 1,
+            inspectionRate: 0.5,
+            standardABC: 0,
+            customABC: 0,
+            standardVariance: 0,
+            customVariance: 0,
+            standardPctVar: 0.5,
+            customPctVar: 0.5
+        };
+
+        function checkValue(input, correctValue, tolerance = 0) {
+            const feedbackDiv = input.nextElementSibling;
+            const userValue = parseFloat(input.value.replace(/[$,%]/g, ''));
+            
+            if (isNaN(userValue)) {
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.style.display = 'none';
+                return false;
+            }
+
+            const difference = Math.abs(userValue - correctValue);
+            
+            if (difference <= tolerance) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✓ Correct!';
+                input.style.borderColor = 'var(--success-green)';
+                return true;
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                const percentOff = ((difference / Math.abs(correctValue)) * 100).toFixed(1);
+                feedbackDiv.innerHTML = `✗ Not quite. You're ${percentOff}% off. Double-check your calculations.`;
+                input.style.borderColor = 'var(--error-red)';
+                return false;
+            }
+        }
+
+        function verifyAll() {
+            let correct = 0;
+            let total = 0;
+            
+            for (const [id, correctValue] of Object.entries(correctAnswers)) {
+                const input = document.getElementById(id);
+                const tolerance = tolerances[id] || 0;
+                total++;
+                
+                if (checkValue(input, correctValue, tolerance)) {
+                    correct++;
+                }
+            }
+            
+            const scoreDiv = document.getElementById('overallScore');
+            const percentage = ((correct / total) * 100).toFixed(0);
+            
+            let message = '';
+            let emoji = '';
+            
+            if (percentage === '100') {
+                emoji = '🎉';
+                message = `Perfect! ${correct}/${total} correct!`;
+            } else if (percentage >= '75') {
+                emoji = '👍';
+                message = `Good work! ${correct}/${total} correct. Review the incorrect answers.`;
+            } else if (percentage >= '50') {
+                emoji = '📚';
+                message = `Keep trying! ${correct}/${total} correct. Review your calculations.`;
+            } else {
+                emoji = '💪';
+                message = `${correct}/${total} correct. Don't give up! Review the formulas and try again.`;
+            }
+            
+            scoreDiv.innerHTML = `${emoji} ${message}`;
+            scoreDiv.className = 'overall-score show';
+            
+            // Scroll to score
+            scoreDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Format inputs on blur
+        document.querySelectorAll('input[type="text"]').forEach(input => {
+            input.addEventListener('blur', function() {
+                const value = parseFloat(this.value.replace(/[$,%]/g, ''));
+                if (!isNaN(value)) {
+                    if (this.id.includes('Rate') || this.id.includes('Pct')) {
+                        // Don't add commas to rates and percentages
+                        this.value = value;
+                    } else {
+                        this.value = value.toLocaleString('en-US');
+                    }
+                }
+            });
+            
+            input.addEventListener('focus', function() {
+                this.value = this.value.replace(/,/g, '');
+            });
+        });
+
+        // Collapsible tutorial functions
+        function toggleTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.toggle('collapsed');
+            }
+        }
+
+        function expandTutorial(tutorialId) {
+            const tutorial = document.getElementById(tutorialId);
+            if (tutorial) {
+                tutorial.classList.remove('collapsed');
+                setTimeout(() => {
+                    tutorial.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        // Initialize - expand all tutorials by default
+        document.addEventListener('DOMContentLoaded', function() {
+            // All tutorials start expanded (no collapsed class)
+        });
+    </script>
+</body>
+</html>
