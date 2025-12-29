@@ -35,7 +35,29 @@
             color: var(--white);
             padding: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    position: relative;
         }
+
+            .print-button {
+        position: absolute;
+        bottom: 1rem;
+        right: 2rem;
+        background: var(--primary-blue);
+        color: var(--white);
+        border: 2px solid var(--white);
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .print-button:hover {
+        background: #004BC6;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
 
         .header-content {
             max-width: 1200px;
@@ -540,6 +562,13 @@
             <h1>Phase 8: Strategic Decisions & Capital Budgeting</h1>
             <p>Apex Manufacturing Solutions | Chapter 21</p>
         </div>
+                <button class="print-button" onclick="window.print()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 0.5rem; vertical-align: middle;">
+                <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+            </svg>
+            Print PDF
+        </button>
     </div>
     <div class="accent-bar"></div>
 
