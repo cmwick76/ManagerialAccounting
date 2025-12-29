@@ -44,27 +44,26 @@
             padding: 0 2rem;
         }
 
-                .print-pdf-link {
+        .print-button {
             position: absolute;
-            right: 2rem;
             bottom: 1rem;
+            right: 2rem;
+            background: var(--primary-blue);
             color: var(--white);
-            text-decoration: none;
+            border: 2px solid var(--white);
+            padding: 0.75rem 1.5rem;
             font-size: 1rem;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 4px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .print-pdf-link:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-2px);
+        .print-button:hover {
+            background: #004BC6;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
-
         .header h1 {
             font-size: 2.5rem;
             font-weight: 700;
@@ -552,8 +551,7 @@
         <div class="header-content">
             <h1>Phase 2: Job Order Costing & Introduction to Pivot Tables</h1>
             <p>Apex Manufacturing Solutions | Chapter 15</p>
-                            <a href="javascript:window.print()" class="print-pdf-link">🖨️ Print PDF</a>
-        </div>
+                <button onclick="window.print()" class="print-button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:8px;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Print PDF</button>        </div>
     </div>
     <div class="accent-bar"></div>
 
