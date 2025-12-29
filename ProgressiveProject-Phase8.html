@@ -35,7 +35,6 @@
             color: var(--white);
             padding: 2rem 0;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                        position: relative;
         }
 
         .header-content {
@@ -55,27 +54,6 @@
             font-size: 1.1rem;
             font-weight: 400;
             opacity: 0.95;
-        }
-
-                .print-button {
-            position: absolute;
-            bottom: 1rem;
-            right: 2rem;
-            background: var(--primary-blue);
-            color: var(--white);
-            border: 2px solid var(--white);
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .print-button:hover {
-            background: #004BC6;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
         .accent-bar {
@@ -532,16 +510,25 @@
             opacity: 1;
         }
 
-        .formula-box {
+        .flow-diagram {
             background: #f0f7ff;
             border: 2px solid var(--primary-blue);
-            padding: 1rem;
+            padding: 1.5rem;
             margin: 1rem 0;
-            border-radius: 6px;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
         }
 
-        .formula-box .formula-label {
+        .budget-box {
+            background: #fff9e6;
+            border: 2px solid var(--sunglow);
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+
+        .budget-box h5 {
             color: var(--primary-blue);
             font-weight: bold;
             margin-bottom: 0.5rem;
@@ -552,8 +539,7 @@
     <div class="header">
         <div class="header-content">
             <h1>Phase 8: Strategic Decisions & Capital Budgeting</h1>
-            <p>Apex Manufacturing Solutions | Chapters 23 & 24</p>
-                            <button onclick="window.print()" class="print-button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; vertical-align:middle; margin-right:8px;"><path d="M6 9V2h12v7"></path><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Print PDF</button>
+            <p>Apex Manufacturing Solutions | Chapter 21</p>
         </div>
     </div>
     <div class="accent-bar"></div>
@@ -561,33 +547,29 @@
     <div class="container">
         <div class="intro-section">
             <h2>Welcome to Phase 8!</h2>
-            <p>How many units must Apex sell to break even? What profit will we earn at different sales levels? How do price changes affect profitability? Cost-Volume-Profit (CVP) analysis answers these critical questions! You'll calculate break-even points, analyze contribution margins, use Excel's Goal Seek and Scenario Manager for strategic decisions, and create dynamic CVP charts that visualize the relationship between costs, volume, and profits.</p>
+            <p>Managers face critical strategic decisions daily: Should we make or buy? Accept a special order? Drop an unprofitable product line? Invest in new equipment? You'll master relevant cost analysis to make short-term tactical decisions, then evaluate long-term capital investments using NPV, IRR, payback period, and accounting rate of return. Excel's financial functions will help you build sophisticated decision models that guide Apex's strategic direction.</p>
         </div>
 
         <div class="instructions">
             <h4>📋 Phase 8 Requirements:</h4>
             <ul>
-                <li><strong>CVP Analysis:</strong> Calculate contribution margin, CM ratio, break-even point in units and dollars, target profit levels, margin of safety</li>
-                <li><strong>Excel Decision Tools:</strong>
-                    <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
-                        <li>Goal Seek: Find sales needed for target profit</li>
-                        <li>Scenario Manager: Best case, Worst case, Most likely scenarios</li>
-                        <li>Data Tables: Sensitivity analysis for price and volume changes</li>
-                        <li>Dynamic CVP Charts: Visual break-even analysis</li>
-                    </ul>
-                </li>
-                <li><strong>Strategic Decisions:</strong> Make-or-buy, special order pricing, sales mix optimization, operating leverage analysis</li>
-                <li><strong>Management Report:</strong> Recommend pricing strategies, evaluate risk with operating leverage, propose sales targets</li>
+                <li><strong>Relevant Cost Analysis:</strong> Identify relevant vs. irrelevant costs, analyze make-or-buy decisions, special orders, segment elimination</li>
+                <li><strong>Capital Budgeting Methods:</strong> Net Present Value (NPV), Internal Rate of Return (IRR), Payback Period, Accounting Rate of Return (ARR)</li>
+                <li><strong>Excel Financial Functions:</strong> Master NPV(), IRR(), PV(), FV(), PMT() for investment analysis</li>
+                <li><strong>Decision Models:</strong> Build comparative analysis models, sensitivity analysis, decision matrices with weighted criteria</li>
+                <li><strong>Time Value of Money:</strong> Calculate present value, future value, annuities, understand discount rates</li>
+                <li><strong>Strategic Analysis:</strong> Evaluate multiple alternatives, consider qualitative factors, assess risk</li>
+                <li><strong>Management Report:</strong> Support decisions with quantitative analysis, assess risk, recommend optimal strategies</li>
             </ul>
         </div>
 
         <div class="tutorial-nav">
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">📊 CVP Fundamentals</a>
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">⚖️ Break-Even Analysis</a>
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">🎯 Goal Seek</a>
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">📋 Scenario Manager</a>
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">📈 CVP Charts</a>
-            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">⚡ Operating Leverage</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial1')">🔍 Relevant Costs</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial2')">🏭 Make-or-Buy & Special Orders</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial3')">⏱️ Time Value of Money</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial4')">💰 NPV & IRR</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial5')">📊 Payback & ARR</a>
+            <a href="javascript:void(0)" onclick="expandTutorial('tutorial6')">🎯 Decision Matrices</a>
         </div>
 
         <!-- TUTORIAL 1: RELEVANT COSTS -->
@@ -1490,7 +1472,105 @@
             </div>
         </div>
 
-                                Opportunity Cost: Warehouse rent foregone
+        <div class="instructions">
+            <h4>🎯 Ready to Complete Phase 8!</h4>
+            <p style="margin-top: 0.5rem;">You've learned comprehensive master budgeting! Apply these skills:</p>
+            <ul style="margin-top: 0.5rem;">
+                <li>Prepare complete operating budgets (Sales → Production → DM → DL → MOH → S&A)</li>
+                <li>Build integrated cash budget with borrowing/repayment</li>
+                <li>Link all worksheets using cell references</li>
+                <li>Create budgeted income statement from operating budgets</li>
+                <li>Construct budgeted balance sheet with proper calculations</li>
+                <li>Document assumptions and test sensitivity</li>
+                <li>Analyze budget feasibility and financing needs</li>
+            </ul>
+        </div>
+
+        <div class="check-figures-section">
+            <h3>✓ Interactive Check Figures - Strategic Decisions & Capital Budgeting</h3>
+            <p>Enter your calculated values below to verify your capital budgeting calculations. The system will provide immediate feedback!</p>
+
+            <div class="check-grid">
+                <div class="check-item">
+                    <label for="relevantCostMake">
+                        Relevant Cost to Make (per unit)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">DM + DL + Variable OH only</span>
+                        </span>
+                    </label>
+                    <input type="text" id="relevantCostMake" placeholder="Enter amount (e.g., 32.00)" oninput="checkValue(this, 32, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="specialOrderProfit">
+                        Special Order Incremental Profit
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Revenue - Variable Costs</span>
+                        </span>
+                    </label>
+                    <input type="text" id="specialOrderProfit" placeholder="Enter amount (e.g., 39,000)" oninput="checkValue(this, 39000, 500)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="presentValue">
+                        Present Value of $20,000 in 3 years @ 10%
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">PV = FV ÷ (1 + r)^n</span>
+                        </span>
+                    </label>
+                    <input type="text" id="presentValue" placeholder="Enter amount (e.g., 15,000)" oninput="checkValue(this, 15026, 50)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="npv">
+                        NPV: $100K investment, $30K/yr for 5 yrs @ 10%
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Use Excel NPV function</span>
+                        </span>
+                    </label>
+                    <input type="text" id="npv" placeholder="Enter amount (e.g., 13,500)" oninput="checkValue(this, 13724, 100)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="irr">
+                        IRR: Same project as above (%)
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Use Excel IRR function</span>
+                        </span>
+                    </label>
+                    <input type="text" id="irr" placeholder="Enter % (e.g., 15.5)" oninput="checkValue(this, 15.24, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="payback">
+                        Payback Period (years): $100K ÷ $30K/yr
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Investment ÷ Annual Cash Flow</span>
+                        </span>
+                    </label>
+                    <input type="text" id="payback" placeholder="Enter years (e.g., 3.5)" oninput="checkValue(this, 3.33, 0.1)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="arr">
+                        ARR: $12K income, $55K avg investment
+                        <span class="tooltip">ℹ️
+                            <span class="tooltiptext">Income ÷ Average Investment</span>
+                        </span>
+                    </label>
+                    <input type="text" id="arr" placeholder="Enter % (e.g., 22.0)" oninput="checkValue(this, 21.8, 0.5)">
+                    <div class="feedback"></div>
+                </div>
+
+                <div class="check-item">
+                    <label for="opportunityCost">
+                        Opportunity Cost: Warehouse rent foregone
                         <span class="tooltip">ℹ️
                             <span class="tooltiptext">Benefit given up by choosing alternative</span>
                         </span>
@@ -1510,26 +1590,26 @@
     <script>
         // Store correct answers
         const correctAnswers = {
-            unitCM: 38.00,
-            cmRatio: 40.0,
-            breakEvenUnits: 3158,
-            breakEvenSales: 300000,
-            targetUnits: 4474,
-            marginSafety: 175000,
-            marginSafetyPct: 36.8,
-            dol: 2.71
+            relevantCostMake: 32,
+            specialOrderProfit: 39000,
+            presentValue: 15026,
+            npv: 13724,
+            irr: 15.24,
+            payback: 3.33,
+            arr: 21.8,
+            opportunityCost: 30000
         };
 
         // Store tolerance for each answer
         const tolerances = {
-            unitCM: 0.5,
-            cmRatio: 0.5,
-            breakEvenUnits: 5,
-            breakEvenSales: 500,
-            targetUnits: 5,
-            marginSafety: 500,
-            marginSafetyPct: 0.5,
-            dol: 0.05
+            relevantCostMake: 0.5,
+            specialOrderProfit: 500,
+            presentValue: 50,
+            npv: 100,
+            irr: 0.5,
+            payback: 0.1,
+            arr: 0.5,
+            opportunityCost: 500
         };
 
         function checkValue(input, correctValue, tolerance = 0) {
@@ -1604,15 +1684,7 @@
             input.addEventListener('blur', function() {
                 const value = parseFloat(this.value.replace(/[$,%]/g, ''));
                 if (!isNaN(value)) {
-                    if (this.id.includes('Ratio') || this.id.includes('Pct')) {
-                        // Don't add commas to percentages
-                        this.value = value;
-                    } else if (this.id === 'dol' || this.id === 'unitCM') {
-                        // Don't add commas to ratios and unit values
-                        this.value = value;
-                    } else {
-                        this.value = value.toLocaleString('en-US');
-                    }
+                    this.value = value.toLocaleString('en-US');
                 }
             });
             
